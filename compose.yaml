@@ -1,0 +1,74 @@
+services:
+  db:
+    container_name: db
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: internme
+      MYSQL_USER: mircodev
+      MYSQL_PASSWORD: mircodevpass
+    ports:
+      - 3306:3306
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - internmeNW
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+    networks:
+      - internmeNW
+
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_DATABASE: internme
+      DB_USERNAME: mircodev
+      DB_PASSWORD: mircodevpass
+    volumes:
+      - ./backend:/internme/backend
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    networks:
+      - internmeNW
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    tty: true
+    restart: always
+    volumes:
+      - ./frontend:/internme/frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+    networks:
+      - internmeNW
+
+volumes:
+  dbdata: {}
+
+networks:
+  internmeNW:
+    driver: bridge
