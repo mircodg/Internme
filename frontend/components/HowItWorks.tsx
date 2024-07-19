@@ -24,7 +24,7 @@ const student = [
   },
 ];
 
-const academic = [
+const accademic = [
   {
     step: 1,
     title: "Register",
@@ -35,7 +35,7 @@ const academic = [
     step: 2,
     title: "Manage your students",
     description:
-      "Easily see how many and wich of your students are logged in, and how many internships they applied to and with wich organizations.",
+      "Easily see how many and which of your students are logged in, and how many internships they applied to and with wich organizations.",
   },
   {
     step: 3,
@@ -88,7 +88,7 @@ const HowItWorks = () => {
             </Button>
             <Button
               variant="outline"
-              onClick={() => setUserType(academic)}
+              onClick={() => setUserType(accademic)}
               className="p-4 rounded-full focus:bg-accent focus:text-accent-foreground"
             >
               Accademic
