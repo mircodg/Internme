@@ -9,12 +9,12 @@ const LandingNavbar = () => {
         <p className="text-balance text-center font-bold">internMe</p>
       </Link>
       <div className="flex gap-4 items-center justify-center">
-        <Link href="/login" className=" hidden md:block">
+        <Link href="/auth/login" className=" hidden md:block">
           <Button variant={"outline"} size={"sm"} className="font-bold">
             Login
           </Button>
         </Link>
-        <Link href="/register" className=" hidden md:block">
+        <Link href="/auth/register" className=" hidden md:block">
           <Button variant={"outline"} size={"sm"} className="font-bold">
             Register
           </Button>

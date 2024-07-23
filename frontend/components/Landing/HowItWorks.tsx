@@ -24,7 +24,7 @@ const student = [
   },
 ];
 
-const accademic = [
+const academic = [
   {
     step: 1,
     title: "Register",
@@ -88,10 +88,10 @@ const HowItWorks = () => {
             </Button>
             <Button
               variant="outline"
-              onClick={() => setUserType(accademic)}
+              onClick={() => setUserType(academic)}
               className="p-4 rounded-full focus:bg-accent focus:text-accent-foreground"
             >
-              Accademic
+              Academic
             </Button>
             <Button
               variant="outline"

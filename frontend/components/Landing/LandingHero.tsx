@@ -25,7 +25,7 @@ const LandingHeroSection = () => {
               <span className=" font-semibold">you</span>
             </p>
             <div className="flex items-center justify-center md:items-start md:justify-normal gap-4">
-              <Link href="/login">
+              <Link href="/auth/login">
                 <Button>Get Started</Button>
               </Link>
               <Link href="#how-it-works">
