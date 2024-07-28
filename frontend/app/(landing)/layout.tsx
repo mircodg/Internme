@@ -7,22 +7,17 @@ interface LandingLayoutProps {
 
 const LandingLayout = ({ children }: LandingLayoutProps) => {
   return (
-    <>
-      <html lang="en" suppressHydrationWarning>
-        <head />
-        <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <LandingNavbar />
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    </>
+    <main>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <LandingNavbar />
+        {children}
+      </ThemeProvider>
+    </main>
   );
 };
 
