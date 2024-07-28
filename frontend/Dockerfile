@@ -20,6 +20,9 @@ COPY . .
 
 # Note: Don't expose ports here, Compose will handle that for us
 
+# Build the application
+RUN npm install
+
 # Start Next.js in development mode based on the preferred package manager
 CMD \
   if [ -f yarn.lock ]; then yarn dev; \
