@@ -46,12 +46,12 @@ InternMe is designed to:
 
 ## Installation
 
-To install and run the application locally, follow these steps:
+To install and run the application locally, you need to have composer installed on your machine. To install composer please refer to the official documentation [here](https://getcomposer.org/download/). Then follow these steps:
 
 1. **Clone the repository:**
 
    ```bash
-   git clone [https://github.com/mircodg/Internme.git](https://github.com/mircodg/Internme.git)
+   git clone https://github.com/mircodg/Internme.git
 
    ```
 
@@ -62,7 +62,21 @@ To install and run the application locally, follow these steps:
 
    ```
 
-3. **Run docker compose:**
+3. **Navigate to the backend folder:**
+
+   ```bash
+   cd backend
+
+   ```
+
+4. **Run composer for installing dependencies:**
+
+   ```bash
+   composer install
+
+   ```
+
+5. **Run docker compose:**
    ```bash
    docker compose up -d
    ```
