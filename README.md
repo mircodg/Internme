@@ -51,7 +51,7 @@ To install and run the application locally, follow these steps:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/mircodg/Internme.git
+   git clone [https://github.com/mircodg/Internme.git](https://github.com/mircodg/Internme.git)
 
    ```
 
@@ -69,4 +69,4 @@ To install and run the application locally, follow these steps:
 
 ## Usage
 
-Once the development server is running, you can access the platform in your web browser at 'http:localhost:3000'
+Once the development server is running, you can access the platform in your web browser at [http://localhost:3000](http://localhost:3000)
