@@ -23,7 +23,7 @@ return new class extends Migration
                 `idIndirizzoResidenza` int NOT NULL,
                 `idTirocinio` int NULL,
                 `Tipo` enum('Studente', 'Ceo', 'Direttore') NOT NULL DEFAULT 'Studente',
-                `Matricola` varchar(255) NULL,
+                `Matricola` int NULL,
                 `CV` blob NULL,
                 `CDL` varchar(255) NULL,
                 PRIMARY KEY (`idUtente`),
