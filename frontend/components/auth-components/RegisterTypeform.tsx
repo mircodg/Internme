@@ -24,7 +24,7 @@ const RegisterTypeform = () => {
     <AnimatePresence>
       {visible && (
         <AnimateComponent>
-          <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex flex-col gap-8 justify-center items-center">
             <h1 className="text-7xl font-bold">Welcome 👋</h1>
             <Select
               onValueChange={(value) => {
