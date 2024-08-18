@@ -11,6 +11,8 @@ import { Button } from "../ui/button";
 import { ArrowDown, ChevronRightIcon } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import Link from "next/link";
+import axios from "axios";
+import { LoaderCircle } from "lucide-react";
 
 type Inputs = z.infer<typeof businessRegisterSchema>;
 type fieldName = keyof Inputs;
@@ -18,27 +20,39 @@ type fieldName = keyof Inputs;
 const businessSteps = [
   {
     id: 0,
-    title: "Enter the company name",
-    field: "companyName",
+    title: "Enter your name",
+    field: "Nome",
   },
   {
     id: 1,
-    title: "Enter your email",
-    field: "email",
+    title: "Enter your surname",
+    field: "Cognome",
   },
   {
     id: 2,
-    title: "Enter your password",
-    field: "password",
+    title: "Enter your birth date",
+    field: "DataNascita",
   },
   {
     id: 3,
+    title: "Enter your email",
+    field: "Email",
+  },
+  {
+    id: 4,
+    title: "Enter your password",
+    field: "Password",
+  },
+  {
+    id: 5,
     title: "That's it! You're all set 🎉",
   },
 ];
 
 const BusinessForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [status, setStatus] = useState<Number>();
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   const {
@@ -59,17 +73,32 @@ const BusinessForm = () => {
 
     setCurrentStep((prev) => prev + 1);
 
+    console.log(currentStep);
+
     if (currentStep === businessSteps.length - 2) {
       handleSubmit(processForm)();
     }
   };
 
   const processForm: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-    toast({
-      title: "Account created",
-      description: "Your account has been created successfully",
-    });
+    try {
+      await axios.post("http://localhost:8000/api/register", data);
+      setStatus(200);
+      toast({
+        title: "Account created successfully!",
+        description: "You can now login.",
+      });
+    } catch {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        variant: "destructive",
+      });
+      setStatus(500);
+    } finally {
+      setIsLoading(!isLoading);
+    }
+
     reset();
   };
 
@@ -77,20 +106,27 @@ const BusinessForm = () => {
     <form onSubmit={handleSubmit(processForm)}>
       {currentStep === 0 && (
         <AnimateComponent>
-          <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex flex-col gap-8 justify-center items-center">
             <h1 className="text-7xl font-bold">
               {businessSteps[currentStep].title}
             </h1>
-            <div className="flex justify-items-center items-center gap-4">
-              <Input
-                className="text-center"
-                type="text"
-                {...register("companyName")}
-                size={50}
-              />
-              <Button onClick={nextStep} variant={"outline"}>
-                <ArrowDown />
-              </Button>
+            <div className="flex justify-center gap-4">
+              <div className="flex flex-col justify-center gap-4">
+                <Input
+                  className="text-center"
+                  type="text"
+                  {...register("Nome")}
+                  size={50}
+                />
+                {errors.Nome && (
+                  <p className="text-red-500 text-sm">{errors.Nome?.message}</p>
+                )}
+              </div>
+              <div>
+                <Button onClick={nextStep} variant={"outline"}>
+                  <ArrowDown />
+                </Button>
+              </div>
             </div>
           </div>
         </AnimateComponent>
@@ -98,20 +134,29 @@ const BusinessForm = () => {
 
       {currentStep === 1 && (
         <AnimateComponent>
-          <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex flex-col gap-8 justify-center items-center">
             <h1 className="text-7xl font-bold">
               {businessSteps[currentStep].title}
             </h1>
-            <div className="flex justify-items-center items-center gap-4">
-              <Input
-                className="text-center"
-                type="text"
-                {...register("email")}
-                size={50}
-              />
-              <Button onClick={nextStep} variant={"outline"}>
-                <ArrowDown />
-              </Button>
+            <div className="flex justify-center gap-4">
+              <div className="flex flex-col justify-center gap-4">
+                <Input
+                  className="text-center"
+                  type="text"
+                  {...register("Cognome")}
+                  size={50}
+                />
+                {errors.Cognome && (
+                  <p className="text-red-500 text-sm">
+                    {errors.Cognome?.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Button onClick={nextStep} variant={"outline"}>
+                  <ArrowDown />
+                </Button>
+              </div>
             </div>
           </div>
         </AnimateComponent>
@@ -119,20 +164,29 @@ const BusinessForm = () => {
 
       {currentStep === 2 && (
         <AnimateComponent>
-          <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex flex-col gap-8 justify-center items-center">
             <h1 className="text-7xl font-bold">
               {businessSteps[currentStep].title}
             </h1>
-            <div className="flex justify-items-center items-center gap-4">
-              <Input
-                className="text-center"
-                type="password"
-                {...register("password")}
-                size={50}
-              />
-              <Button onClick={nextStep} variant={"outline"}>
-                <ArrowDown />
-              </Button>
+            <div className="flex justify-center gap-4">
+              <div className="flex flex-col justify-center gap-4">
+                <Input
+                  className="text-center"
+                  type="date"
+                  {...register("DataNascita")}
+                  size={50}
+                />
+                {errors.DataNascita && (
+                  <p className="text-red-500 text-sm">
+                    {errors.DataNascita?.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Button onClick={nextStep} variant={"outline"}>
+                  <ArrowDown />
+                </Button>
+              </div>
             </div>
           </div>
         </AnimateComponent>
@@ -144,15 +198,95 @@ const BusinessForm = () => {
             <h1 className="text-7xl font-bold">
               {businessSteps[currentStep].title}
             </h1>
-            <Link href={"/dashboard"}>
-              <Button variant={"outline"} asChild className="group">
-                <div className="flex justify-center items-center gap-2">
-                  <span>Go to dashboard</span>
-                  <ChevronRightIcon className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </div>
-              </Button>
-            </Link>
+            <div className="flex justify-center gap-4">
+              <div className="flex flex-col justify-center gap-4">
+                <Input
+                  className="text-center"
+                  type="text"
+                  {...register("Email")}
+                  size={50}
+                />
+                {errors.Email && (
+                  <p className="text-red-500 text-sm">
+                    {errors.Email?.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Button onClick={nextStep} variant={"outline"}>
+                  <ArrowDown />
+                </Button>
+              </div>
+            </div>
           </div>
+        </AnimateComponent>
+      )}
+
+      {currentStep === 4 && (
+        <AnimateComponent>
+          <div className="flex flex-col gap-8 justify-center items-center">
+            <h1 className="text-7xl font-bold">
+              {businessSteps[currentStep].title}
+            </h1>
+            <div className="flex justify-center gap-4">
+              <div className="flex flex-col justify-center gap-4">
+                <Input
+                  className="text-center"
+                  type="text"
+                  {...register("Password")}
+                  size={50}
+                />
+                {errors.Password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.Password?.message}
+                  </p>
+                )}
+              </div>
+              <div>
+                <Button onClick={nextStep} variant={"outline"}>
+                  <ArrowDown />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </AnimateComponent>
+      )}
+
+      {currentStep === 5 && (
+        <AnimateComponent>
+          {isLoading && (
+            <div className="flex flex-col gap-8 justify-center items-center">
+              <LoaderCircle className="w-16 h-16 animate-spin" />
+            </div>
+          )}
+          {!isLoading && status === 200 && (
+            <div className="flex flex-col gap-8 justify-center items-center">
+              <h1 className="text-7xl font-bold">
+                {businessSteps[currentStep].title}
+              </h1>
+              <Link href={"/dashboard"}>
+                <Button variant={"outline"} asChild className="group">
+                  <div className="flex justify-center items-center gap-2">
+                    <span>Login</span>
+                    <ChevronRightIcon className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          )}
+          {!isLoading && status === 500 && (
+            <div className="flex flex-col gap-8 justify-center items-center">
+              <h1 className="text-7xl font-bold">Something went wrong 🥺</h1>
+              <Link href={"/"}>
+                <Button variant={"outline"} asChild className="group">
+                  <div className="flex justify-center items-center gap-2">
+                    <span>Home</span>
+                    <ChevronRightIcon className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </Button>
+              </Link>
+            </div>
+          )}
         </AnimateComponent>
       )}
     </form>
