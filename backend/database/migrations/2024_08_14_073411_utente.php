@@ -19,7 +19,7 @@ return new class extends Migration
                 `Email` varchar(255) NOT NULL,
                 `Password` varchar(255) NOT NULL,
                 `DataNascita` date NOT NULL,
-                `TipoUtente` enum('Direttore', 'Ceo') NOT NULL,
+                `TipoUtente` enum('Direttore', 'Ceo', 'Studente') NOT NULL,
                 PRIMARY KEY (`idUtente`),
                 UNIQUE (`Email`)
             )
