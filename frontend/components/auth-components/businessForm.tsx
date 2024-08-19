@@ -73,8 +73,6 @@ const BusinessForm = () => {
 
     setCurrentStep((prev) => prev + 1);
 
-    console.log(currentStep);
-
     if (currentStep === businessSteps.length - 2) {
       handleSubmit(processForm)();
     }
