@@ -550,7 +550,7 @@ const StudentForm = () => {
               <div className="flex flex-col justify-center gap-4">
                 <Input
                   className="text-center"
-                  type="text"
+                  type="password"
                   {...register("Password")}
                   size={50}
                 />
