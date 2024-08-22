@@ -17,23 +17,48 @@ import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import Link from "next/link";
+import { LoaderCircle } from "lucide-react";
+import axios from "axios";
+import { toast } from "../ui/use-toast";
 
 function LoginForm() {
-  //   Defining schema to use for resolver
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Defining schema to use for resolver
   const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      Email: "",
+      Password: "",
     },
   });
 
   // On submit handler
-  const onSubmit = (data: z.infer<typeof LoginSchema>) => {
-    // backend logic
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      setIsLoading(false);
+      toast({
+        title: "Login successful",
+        description: response.data.message,
+      });
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+      toast({
+        title: "Login failed",
+        description: "Error: " + error,
+      });
+    }
     // loginHandler();
   };
 
@@ -47,7 +72,7 @@ function LoginForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
@@ -64,10 +89,10 @@ function LoginForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
-                name="email"
+                name="Email"
                 render={({ field }) => (
                   <FormItem>
                     <Label htmlFor="email">Email</Label>
@@ -93,7 +118,7 @@ function LoginForm() {
               </div>
               <FormField
                 control={form.control}
-                name="password"
+                name="Password"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -110,13 +135,16 @@ function LoginForm() {
               />
             </div>
             <Button type="submit" className="w-full">
-              Login
+              {isLoading ? <LoaderCircle className=" animate-spin" /> : "Login"}
             </Button>
-            <Button variant="outline" className="w-full">
-              Login with Google
+            <Button variant="outline" className="w-full" disabled>
+              Login with Google coming soon...
             </Button>
             <div className="text-center text-sm">
-              Don&apos;t have an account? <Link href="/register">Sign up</Link>
+              Don&apos;t have an account?{" "}
+              <Link href="/auth/register" className=" underline">
+                Sign up
+              </Link>
             </div>
           </div>
         </form>
