@@ -22,9 +22,11 @@ import Link from "next/link";
 import { LoaderCircle } from "lucide-react";
 import axios from "axios";
 import { toast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   // Defining schema to use for resolver
   const form = useForm({
@@ -48,15 +50,16 @@ function LoginForm() {
       );
       setIsLoading(false);
       toast({
-        title: "Login successful",
-        description: response.data.message,
+        title: response.data.message,
       });
+      if (response.data.message !== "Already logged in") {
+        router.push(`/dashboard`);
+      }
     } catch (error) {
       setIsLoading(false);
       console.log(error);
       toast({
-        title: "Login failed",
-        description: "Error: " + error,
+        title: "Invalid credentials",
       });
     }
     // loginHandler();
