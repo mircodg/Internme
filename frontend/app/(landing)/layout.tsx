@@ -1,4 +1,5 @@
-import LandingNavbar from "@/components/Landing/LandingNavbar";
+// import LandingNavbar from "@/components/Landing/LandingNavbar";
+import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "next-themes";
 
 interface LandingLayoutProps {
@@ -14,7 +15,7 @@ const LandingLayout = ({ children }: LandingLayoutProps) => {
         enableSystem
         disableTransitionOnChange
       >
-        <LandingNavbar />
+        <Navbar />
         {children}
       </ThemeProvider>
     </main>
