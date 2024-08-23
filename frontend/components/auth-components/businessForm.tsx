@@ -262,7 +262,7 @@ const BusinessForm = () => {
               <h1 className="text-7xl font-bold">
                 {businessSteps[currentStep].title}
               </h1>
-              <Link href={"/dashboard"}>
+              <Link href={"/auth/login"}>
                 <Button variant={"outline"} asChild className="group">
                   <div className="flex justify-center items-center gap-2">
                     <span>Login</span>
