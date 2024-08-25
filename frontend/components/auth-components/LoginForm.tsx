@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LoaderCircle } from "lucide-react";
 import axios from "axios";
@@ -26,7 +26,18 @@ import { useRouter } from "next/navigation";
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [userRole, setUserRole] = useState();
   const router = useRouter();
+
+  useEffect(() => {
+    if (userRole === "Studente") {
+      router.push("/dashboard/student");
+    } else if (userRole === "Direttore") {
+      router.push("/dashboard/director");
+    } else {
+      router.push("/dashboard/ceo");
+    }
+  }, [userRole, router]);
 
   // Defining schema to use for resolver
   const form = useForm({
@@ -49,17 +60,20 @@ function LoginForm() {
         }
       );
       setIsLoading(false);
+      setUserRole(response.data.tipoUtente);
       toast({
         title: response.data.message,
       });
-      if (response.data.message !== "Already logged in") {
-        router.push(`/dashboard`);
+      if (response.data.message == "Already logged in") {
+        toast({
+          title: response.data.message,
+        });
       }
     } catch (error) {
       setIsLoading(false);
       console.log(error);
       toast({
-        title: "Invalid credentials",
+        title: "Invalid credentials ",
       });
     }
     // loginHandler();
