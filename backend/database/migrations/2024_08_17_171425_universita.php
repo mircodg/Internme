@@ -16,7 +16,8 @@ return new class extends Migration
                 `idUniversità` int NOT NULL AUTO_INCREMENT,
                 `Nome` varchar(255) NOT NULL,
                 `idUtente` int NOT NULL,
-                PRIMARY KEY (`idUniversità`)
+                PRIMARY KEY (`idUniversità`), 
+                FOREIGN KEY (`idUtente`) REFERENCES `Utenti`(`idUtente`)
             )"
         ); 
     }
