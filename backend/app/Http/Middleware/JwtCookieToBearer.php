@@ -31,6 +31,7 @@ use Closure;
 // use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class JwtCookieToBearer 
 {
@@ -46,9 +47,13 @@ class JwtCookieToBearer
     public function handle(Request $request, Closure $next)
     {
         if ($jwt = $request->cookie('jwt')) {
-            $request->headers->set('Authorization', 'Bearer ' . $jwt); 
-            Log::info('JwtCookieToBearer:' . $jwt);
-            return $next($request);
+            if(PersonalAccessToken::findToken($jwt)){
+                $request->headers->set('Authorization', 'Bearer ' . $jwt); 
+                return $next($request);
+            }
+            else{
+                return response()->json(['error' => 'Unauthenticated.'], 401);
+            }
         }
         else{
             return response()->json(['error' => 'Unauthenticated.'], 401);
