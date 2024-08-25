@@ -35,7 +35,15 @@ import axios from "axios";
 import Image from "next/image";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import clsx from "clsx";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "../ui/breadcrumb";
 
 type NavItem = {
   title: string;
@@ -107,10 +115,11 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
     role === "student" ? student : role === "director" ? director : ceo;
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8000/api/logout", {
+      await axios.post("http://localhost:8000/api/logout", null, {
         withCredentials: true,
       });
       router.push("/");
@@ -136,7 +145,14 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                 <TooltipTrigger asChild>
                   <Link
                     href={item.href}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                    className={clsx(
+                      "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                      {
+                        "flex h-9 w-9 items-center justify-center rounded-lg bg-accent dark:text-white text-black transition-colors hover:text-foreground md:h-8 md:w-8":
+                          pathname ===
+                          `/dashboard/${role}/${item.title.toLowerCase()}`,
+                      }
+                    )}
                   >
                     <item.icon className="h-5 w-5" />
                     <span className="sr-only">{item.title}</span>
@@ -202,6 +218,23 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
               </nav>
             </SheetContent>
           </Sheet>
+          {/* <Breadcrumb className="hidden md:flex">
+            <BreadcrumbList>
+              {pathname.split("/").map((path, index) => (
+                <>
+                  <BreadcrumbItem key={index}>
+                    <BreadcrumbLink asChild>
+                      <Link href={`/dashboard/${role}/${path}`}>
+                        {" "}
+                        {`${path.charAt(0).toUpperCase() + path.slice(1)}`}
+                      </Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  <BreadcrumbSeparator />
+                </>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb> */}
           <div className="relative ml-auto flex-1 md:grow-0">
             {/* <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -218,9 +251,9 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                 className="overflow-hidden rounded-full"
               >
                 <Image
-                  src="/user-placeholder.jpg"
-                  width={90}
-                  height={90}
+                  src="/user-placeholder.svg"
+                  width={36}
+                  height={36}
                   alt="Avatar"
                   className="rounded-full overflow-hidden"
                 />
