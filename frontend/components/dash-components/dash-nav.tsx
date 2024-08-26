@@ -12,6 +12,7 @@ import {
   BriefcaseBusiness,
   MessageCircle,
   FilePen,
+  LayoutDashboard,
 } from "lucide-react";
 import {
   Tooltip,
@@ -140,6 +141,24 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
             <span className="sr-only">InternMe</span>
           </Link>
           <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href={`/dashboard/${role}`}
+                  className={clsx(
+                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                    {
+                      "flex h-9 w-9 items-center justify-center rounded-lg bg-accent dark:text-white text-black transition-colors hover:text-foreground md:h-8 md:w-8":
+                        pathname === `/dashboard/${role}`,
+                    }
+                  )}
+                >
+                  <LayoutDashboard className="h-5 w-5" />
+                  <span className="sr-only">Dashboard</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Dashboard</TooltipContent>
+            </Tooltip>
             {mapItem.map((item) => (
               <Tooltip key={item.title}>
                 <TooltipTrigger asChild>
