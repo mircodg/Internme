@@ -275,6 +275,7 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                   height={36}
                   alt="Avatar"
                   className="rounded-full overflow-hidden"
+                  priority
                 />
               </Button>
             </DropdownMenuTrigger>
