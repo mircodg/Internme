@@ -17,7 +17,7 @@ return new class extends Migration
                 `DataStipulazione` date NOT NULL,
                 PRIMARY KEY (`idConvenzione`, `idUniversita`),
                 FOREIGN KEY (`idConvenzione`) REFERENCES `Convenzioni` (`idConvenzione`),
-                FOREIGN KEY (`idUniversita`) REFERENCES `Università` (`idUniversita`)
+                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`)
             )"
         );
     }

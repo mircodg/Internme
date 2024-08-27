@@ -13,7 +13,7 @@ return new class extends Migration
         $pdo = DB::connection()->getPdo();
         $pdo->exec(
             "CREATE TABLE `Universita` (
-                `idUniversità` int NOT NULL AUTO_INCREMENT,
+                `idUniversita` int NOT NULL AUTO_INCREMENT,
                 `Nome` varchar(255) NOT NULL,
                 `idUtente` int NOT NULL,
                 PRIMARY KEY (`idUniversita`), 
