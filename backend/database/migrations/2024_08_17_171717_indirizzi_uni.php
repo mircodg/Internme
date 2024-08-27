@@ -18,10 +18,10 @@ return new class extends Migration
                 `CAP` int NOT NULL,
                 `Citta` varchar(255) NOT NULL,
                 `Provincia` varchar(255) NOT NULL,
-                `idUniversità` int NOT NULL,
+                `idUniversita` int NOT NULL,
                 UNIQUE (`Citta`),
                 PRIMARY KEY (`idUniversità`),
-                FOREIGN KEY (`idUniversità`) REFERENCES `Università` (`idUniversità`)
+                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`)
             )"
         ); 
     }

@@ -12,11 +12,11 @@ return new class extends Migration
     {
         $pdo = DB::connection()->getPdo();
         $pdo->exec(
-            "CREATE TABLE `Università` (
+            "CREATE TABLE `Universita` (
                 `idUniversità` int NOT NULL AUTO_INCREMENT,
                 `Nome` varchar(255) NOT NULL,
                 `idUtente` int NOT NULL,
-                PRIMARY KEY (`idUniversità`), 
+                PRIMARY KEY (`idUniversita`), 
                 UNIQUE (`Nome`),
                 FOREIGN KEY (`idUtente`) REFERENCES `Utenti`(`idUtente`)
             )"

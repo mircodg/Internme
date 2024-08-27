@@ -14,12 +14,12 @@ return new class extends Migration
         $pdo->exec(
             "CREATE TABLE `Feedback` (
                 `Matricola` int NOT NULL,
-                `idUniversità` int NOT NULL,
+                `idUniversita` int NOT NULL,
                 `idTirocinio` int NOT NULL,
                 `Stelle` int NOT NULL CHECK(Stelle BETWEEN 1 AND 5),
                 `Descrizione` varchar(255) NOT NULL,
-                PRIMARY KEY (`Matricola`, `idUniversità`, `idTirocinio`),
-                FOREIGN KEY (`Matricola`, `idUniversità`) REFERENCES `Studenti` (`Matricola`, `idUniversità`),
+                PRIMARY KEY (`Matricola`, `idUniversita`, `idTirocinio`),
+                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `Studenti` (`Matricola`, `idUniversita`),
                 FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`)
             )"
         );
