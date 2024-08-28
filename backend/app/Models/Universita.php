@@ -28,6 +28,13 @@ class Universita extends Model
             $user = new Utente();
             $response = $user->getUserByToken($token);
             $data = $response->getData(true);
+
+            if($data['user']['TipoUtente'] != 'Direttore'){
+                return response()->json([
+                    'message' => 'You are not a Director'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            
             $userID = $data['user']['idUtente'];
 
             $sql = "INSERT INTO Universita (Nome, idUtente) VALUES (:nomeUniversita, :idUtente)"; 
@@ -60,6 +67,13 @@ class Universita extends Model
             $user = new Utente();
             $response = $user->getUserByToken($token);
             $data = $response->getData(true);
+
+            if($data['user']['TipoUtente'] != 'Direttore'){
+                return response()->json([
+                    'message' => 'You are not a Director'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+
             $userID = $data['user']['idUtente'];
 
             $sql = "SELECT * FROM Universita WHERE idUtente = :idUtente";
