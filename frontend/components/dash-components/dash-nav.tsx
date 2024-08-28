@@ -217,6 +217,13 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                   <Home className="h-5 w-5 transition-all group-hover:scale-110" />
                   <span className="sr-only">InternMe</span>
                 </Link>
+                <Link
+                  href={`/dashboard/${role}`}
+                  className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                >
+                  <LayoutDashboard className="h-5 w-5" />
+                  Dashboard
+                </Link>
                 {mapItem.map((item) => (
                   <Link
                     key={item.title}
