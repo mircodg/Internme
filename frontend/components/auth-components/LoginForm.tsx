@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { LoaderCircle } from "lucide-react";
 import axios from "axios";
@@ -26,10 +26,9 @@ import { useRouter } from "next/navigation";
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const [userRole, setUserRole] = useState();
   const router = useRouter();
 
-  useEffect(() => {
+  const reditectUser = (userRole: "Studente" | "Ceo" | "Direttore") => {
     if (userRole === "Studente") {
       router.push("/dashboard/student");
     } else if (userRole === "Direttore") {
@@ -37,7 +36,7 @@ function LoginForm() {
     } else {
       router.push("/dashboard/ceo");
     }
-  }, [userRole, router]);
+  };
 
   // Defining schema to use for resolver
   const form = useForm({
@@ -48,7 +47,6 @@ function LoginForm() {
     },
   });
 
-  // On submit handler
   const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
     setIsLoading(true);
     try {
@@ -60,7 +58,7 @@ function LoginForm() {
         }
       );
       setIsLoading(false);
-      setUserRole(response.data.tipoUtente);
+      reditectUser(response.data.tipoUtente);
       toast({
         title: response.data.message,
       });
