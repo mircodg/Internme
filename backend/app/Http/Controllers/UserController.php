@@ -12,4 +12,9 @@ class UserController extends Controller
         return $utente->getUser($email); 
     }
 
+    public function returnUser(Request $request){
+        $utente = new Utente(); 
+        return $utente->getUserByToken($request->cookie('jwt')); 
+    }
+
 }
