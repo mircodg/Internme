@@ -81,11 +81,6 @@ const director: NavItem[] = [
     icon: Handshake,
     href: "/dashboard/director/conventions",
   },
-  {
-    title: "Analytics",
-    icon: LineChart,
-    href: "/dashboard/director/analytics",
-  },
 ];
 
 const ceo: NavItem[] = [
