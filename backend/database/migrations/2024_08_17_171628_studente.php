@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -16,7 +16,7 @@ return new class extends Migration
                 `Matricola` int NOT NULL,
                 `idUniversita` int NOT NULL,
                 `idUtente` int NOT NULL,
-                `CV` blob NOT NULL,
+                `CV` varchar(255) NOT NULL,
                 `CDL` varchar(255) NOT NULL,
                 `idTirocinio` int DEFAULT NULL,
                 PRIMARY KEY (`Matricola`, `idUniversita`),
