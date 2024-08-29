@@ -30,7 +30,7 @@ namespace App\Http\Middleware;
 use Closure;
 // use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+
 use Laravel\Sanctum\PersonalAccessToken;
 
 class JwtCookieToBearer 
