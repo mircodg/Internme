@@ -56,7 +56,7 @@ const Navbar = () => {
       if (jwt) {
         setIsAuthenticated(true);
         setIsLoading(false);
-        jwt === "student"
+        jwt === "Studente"
           ? setRole("student")
           : jwt === "Direttore"
           ? setRole("director")
