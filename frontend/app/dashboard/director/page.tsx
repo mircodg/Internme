@@ -1,11 +1,11 @@
-import React from 'react'
+import AcademicDashboard from "@/components/dash-components/academicDashboard";
 
-function page() {
+function directorDashPage() {
   return (
     <div>
-      DIRETTORE BITCH
+      <AcademicDashboard />
     </div>
-  )
+  );
 }
 
-export default page
+export default directorDashPage;
