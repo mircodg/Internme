@@ -45,6 +45,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "../ui/breadcrumb";
+import { ModeToggle } from "../ToggleTheme";
 
 type NavItem = {
   title: string;
@@ -71,11 +72,6 @@ const student: NavItem[] = [
 ];
 
 const director: NavItem[] = [
-  {
-    title: "University",
-    icon: University,
-    href: "/dashboard/director/university",
-  },
   {
     title: "Conventions",
     icon: Handshake,
@@ -264,6 +260,7 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
               className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
             /> */}
           </div>
+          <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
