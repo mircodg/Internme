@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Utente;
- 
-
 class AuthController extends Controller
 {
     function register(Request $req){
