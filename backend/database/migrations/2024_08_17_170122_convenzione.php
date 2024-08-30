@@ -14,12 +14,12 @@ return new class extends Migration
         $pdo->exec(
             "CREATE TABLE `Convenzioni` (
                 `idAzienda` int NOT NULL,
-                'idUniversita' int NOT NULL, 
+                `idUniversita` int NOT NULL, 
                 `Stato` enum('Pending', 'Accepted', 'Rejected') NOT NULL DEFAULT 'Pending',
                 `DataStipulazione` date DEFAULT NULL,
                 PRIMARY KEY (`idAzienda`, `idUniversita`),  
                 FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`), 
-                FOREIGN KEY (`idUnivresita`) REFERENCES `Universita` (`idUniversita`), 
+                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`)
             )"
         );
     }
