@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Universita;
 use App\Models\Azienda;
+use App\Models\Studente;
 use App\Models\IndirizziUniversita;
 
 class UniversitaController extends Controller
@@ -52,6 +53,7 @@ class UniversitaController extends Controller
         $response =  $universita->getUniFromToken($req->cookie('jwt'));
         $data = $response->getData(true);
         $idUniversita = $data['university']['idUniversita'];
-        return $universita->getStudentsByUni($idUniversita);
+        $student =  new Studente();
+        return $student->showStudentsInfoByUni($idUniversita);
     }
 }
