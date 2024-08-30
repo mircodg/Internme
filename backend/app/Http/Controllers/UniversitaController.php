@@ -7,6 +7,7 @@ use App\Models\Universita;
 use App\Models\Azienda;
 use App\Models\Studente;
 use App\Models\IndirizziUniversita;
+use App\Models\Convenzione;
 
 class UniversitaController extends Controller
 {
@@ -55,5 +56,15 @@ class UniversitaController extends Controller
         $idUniversita = $data['university']['idUniversita'];
         $student =  new Studente();
         return $student->showStudentsInfoByUni($idUniversita);
+    }
+
+    function getConventions(Request $req)
+    {
+        $universita = new Universita();
+        $response =  $universita->getUniFromToken($req->cookie('jwt'));
+        $data = $response->getData(true);
+        $idUniversita = $data['university']['idUniversita'];
+        $convenzione = new Convenzione();
+        return $convenzione->showUniversityConventions($idUniversita);
     }
 }

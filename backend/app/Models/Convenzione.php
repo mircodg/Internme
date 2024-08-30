@@ -44,4 +44,29 @@ class Convenzione extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function showUniversityConventions($idUniversita)
+    {
+        try {
+            $sql = "SELECT * FROM Convenzioni WHERE idUniversita = :idUniversita";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(['idUniversita' => $idUniversita]);
+            if ($stmt->rowCount() == 0) {
+                return response()->json([
+                    'message' => 'No conventions found for this university'
+                ], Response::HTTP_NOT_FOUND);
+            }
+            $conventions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return response()->json([
+                'message' => 'Conventions fetched successfully',
+                'conventions' => $conventions
+            ]);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while fetching conventions',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 }

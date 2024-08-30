@@ -21,9 +21,9 @@ Route::middleware([JwtCookieToBearer::class], 'auth:sanctum')->group(function ()
     Route::get('/university/students/list', [UniversitaController::class, 'getStudentsByUni']);
     Route::get('/university/students/count', [UniversitaController::class, 'getStudentsCount']);
     Route::get('university/companies', [UniversitaController::class, 'getCompaniesCount']);
+    Route::get('/university/conventions', [UniversitaController::class, 'getConventions']);
     Route::get('/company', [CompanyController::class, 'getCompanies']);
     Route::post('/company', [CompanyController::class, 'addCompany']);
     Route::get('/student', [StudentController::class, 'checkStudentInfo']);
     Route::post('/student', [StudentController::class, 'createStudent']);
-
 });
