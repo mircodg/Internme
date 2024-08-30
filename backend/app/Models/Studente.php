@@ -84,10 +84,10 @@ class Studente extends Model
         }
     }
 
-    public function showStudentsByUni($idUniversita)
+    public function showStudentsInfoByUni($idUniversita)
     {
         try {
-            $sql = "SELECT * FROM Studenti WHERE idUniversita = :idUniversita";
+            $sql = "SELECT Matricola, Nome, Cognome FROM Studenti RIGHT JOIN Utenti ON Studenti.idUtente = Utenti.idUtente WHERE idUniversita = :idUniversita";
             $stmnt = $this->pdo->prepare($sql);
             $stmnt->execute([
                 'idUniversita' => $idUniversita
