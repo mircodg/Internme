@@ -10,14 +10,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $pdo = DB::connection()->getPdo(); 
+        $pdo = DB::connection()->getPdo();
         $pdo->exec(
             "CREATE TABLE `Convenzioni` (
-                `idConvenzione` int NOT NULL AUTO_INCREMENT,
-                `Stato` enum('Pending', 'Accepted', 'Rejected') NOT NULL DEFAULT 'Pending',
                 `idAzienda` int NOT NULL,
-                PRIMARY KEY (`idConvenzione`),
-                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`)
+                'idUniversita' int NOT NULL, 
+                `Stato` enum('Pending', 'Accepted', 'Rejected') NOT NULL DEFAULT 'Pending',
+                `DataStipulazione` date DEFAULT NULL,
+                PRIMARY KEY (`idAzienda`, `idUniversita`),  
+                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`), 
+                FOREIGN KEY (`idUnivresita`) REFERENCES `Universita` (`idUniversita`), 
             )"
         );
     }
