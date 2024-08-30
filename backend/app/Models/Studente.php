@@ -83,4 +83,32 @@ class Studente extends Model
             ]);
         }
     }
+
+    public function showStudentsByUni($idUniversita)
+    {
+        try {
+            $sql = "SELECT * FROM Studenti WHERE idUniversita = :idUniversita";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idUniversita' => $idUniversita
+            ]);
+            $count = $stmnt->rowCount();
+            if ($count == 0) {
+                return response()->json([
+                    'message' => 'No students found'
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                $students = $stmnt->fetchAll(PDO::FETCH_ASSOC);
+                return response()->json([
+                    'message' => 'Students retrieved successfully',
+                    'students' => $students
+                ], Response::HTTP_OK);
+            }
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while getting students by university',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }
