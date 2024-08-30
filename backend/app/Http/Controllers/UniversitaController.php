@@ -44,4 +44,14 @@ class UniversitaController extends Controller
         $universita = new Universita();
         return $universita->showAll();
     }
+
+    function getStudentsByUni(Request $req)
+    {
+
+        $universita = new Universita();
+        $response =  $universita->getUniFromToken($req->cookie('jwt'));
+        $data = $response->getData(true);
+        $idUniversita = $data['university']['idUniversita'];
+        return $universita->getStudentsByUni($idUniversita);
+    }
 }
