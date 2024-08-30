@@ -111,4 +111,25 @@ class Studente extends Model
             ]);
         }
     }
+
+    public function fetchInternsNumber($idUniversita)
+    {
+        try {
+            $sql = "SELECT * FROM Studenti WHERE idUniversita = :idUniversita AND idTirocinio IS NOT NULL";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idUniversita' => $idUniversita
+            ]);
+            $number = $stmnt->rowCount();
+            return response()->json([
+                'message' => 'Number of interns fetched successfully',
+                'count' => $number
+            ]);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while fetching interns number',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
 }

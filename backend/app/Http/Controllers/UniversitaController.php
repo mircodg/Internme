@@ -67,4 +67,36 @@ class UniversitaController extends Controller
         $convenzione = new Convenzione();
         return $convenzione->showUniversityConventions($idUniversita);
     }
+
+    function fetchConventionNumberForUniversity(Request $request)
+    {
+        $universita = new Universita();
+        $response =  $universita->getUniFromToken($request->cookie('jwt'));
+        $data = $response->getData(true);
+        $idUniversita = $data['university']['idUniversita'];
+        $convenzione = new Convenzione();
+        $response = $convenzione->getActiveConventionUniversityNumber($idUniversita);
+        return $response;
+    }
+
+    function fetchInternsNumber(Request $request)
+    {
+        $universita = new Universita();
+        $response =  $universita->getUniFromToken($request->cookie('jwt'));
+        $data = $response->getData(true);
+        $idUniversita = $data['university']['idUniversita'];
+        $student = new Studente();
+        $response = $student->fetchInternsNumber($idUniversita);
+        return $response;
+    }
+
+    function acceptConvention(Request $request, $PartitaIva)
+    {
+        $universita = new Universita();
+        $response =  $universita->getUniFromToken($request->cookie('jwt'));
+        $data = $response->getData(true);
+        $idUniversita = $data['university']['idUniversita'];
+        $convenzione = new Convenzione();
+        return $convenzione->acceptConvention($PartitaIva, $idUniversita);
+    }
 }
