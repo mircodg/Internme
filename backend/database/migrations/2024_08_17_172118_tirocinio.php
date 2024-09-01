@@ -10,14 +10,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $pdo = DB::connection()->getPdo(); 
+        $pdo = DB::connection()->getPdo();
         $pdo->exec(
             "CREATE TABLE `Tirocini` (
                 `idTirocinio` int NOT NULL AUTO_INCREMENT,
                 `Titolo` varchar(255) NOT NULL,
                 `Descrizione` varchar(255) NOT NULL,
-                `TipoTirocinio` enum('Curriculare', 'Extracurriculare') NOT NULL DEFAULT 'Curriculare',
-                `TipoSvolgimento` enum('In presenza', 'Da remoto') NOT NULL DEFAULT 'In presenza',
+                `TipoTirocinio` enum('Intra-curricular', 'Extra-curricular') NOT NULL DEFAULT 'Intra-curricular',
+                `TipoSvolgimento` enum('In place', 'Remote') NOT NULL DEFAULT 'In place',
                 `MaxTirocinanti` int NOT NULL,
                 `CDL_Richiesto` varchar(255) NOT NULL,
                 `Retribuzione` float DEFAULT NULL,
@@ -25,7 +25,7 @@ return new class extends Migration
                 PRIMARY KEY (`idTirocinio`),
                 FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`)
             )"
-        ); 
+        );
     }
 
     /**
