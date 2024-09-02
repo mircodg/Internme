@@ -23,6 +23,7 @@ return new class extends Migration
                 `Retribuzione` float DEFAULT NULL,
                 `idAzienda` int NOT NULL,
                 PRIMARY KEY (`idTirocinio`),
+                UNIQUE (`Titolo`),
                 FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`)
             )"
         );
