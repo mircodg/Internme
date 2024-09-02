@@ -21,6 +21,7 @@ return new class extends Migration
                 `MaxTirocinanti` int NOT NULL,
                 `CDL_Richiesto` varchar(255) NOT NULL,
                 `Retribuzione` float DEFAULT NULL,
+                `TirocinantiAttivi` int NOT NULL DEFAULT 0, 
                 `idAzienda` int NOT NULL,
                 PRIMARY KEY (`idTirocinio`),
                 UNIQUE (`Titolo`),
