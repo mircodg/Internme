@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Universita;
-use App\Models\Azienda;
 use App\Models\Studente;
 use App\Models\IndirizziUniversita;
 use App\Models\Convenzione;
@@ -98,5 +97,15 @@ class UniversitaController extends Controller
         $idUniversita = $data['university']['idUniversita'];
         $convenzione = new Convenzione();
         return $convenzione->acceptConvention($PartitaIva, $idUniversita);
+    }
+
+    function declineConvention(Request $request, $PartitaIva)
+    {
+        $universita = new Universita();
+        $response =  $universita->getUniFromToken($request->cookie('jwt'));
+        $data = $response->getData(true);
+        $idUniversita = $data['university']['idUniversita'];
+        $convenzione = new Convenzione();
+        return $convenzione->declineConvention($PartitaIva, $idUniversita);
     }
 }
