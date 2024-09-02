@@ -49,6 +49,7 @@ class CompanyController extends Controller
 
     function requestRenew(Request $req, $nomeUniversita)
     {
+        $nomeUniversita = str_replace('%20', ' ', $nomeUniversita);
         $azienda = new Azienda();
         $response = $azienda->getAziendaByToken($req->cookie('jwt'));
         if ($response->getStatusCode() != 200) {
