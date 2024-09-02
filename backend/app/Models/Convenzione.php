@@ -153,24 +153,26 @@ class Convenzione extends Model
             $currentDate = date('Y-m-d');
             foreach ($conventions as $convention) {
                 $date = $convention['DataStipulazione'];
+                if ($date == NULL) {
+                    continue;
+                }
                 $date = strtotime($date);
                 $now = strtotime($currentDate);
                 $diff = $now - $date;
                 $days = $diff / (60 * 60 * 24);
                 if ($days > 365) {
-                    $sql2 = "UPDATE Convenzioni SET Stato = 'Expired', DataStipulazione=NULL WHERE idAzienda = :idAzienda AND idUniversita = :idUniversita AND DataStipulazione = :date";
+                    $sql2 = "UPDATE Convenzioni SET Stato = 'Expired', DataStipulazione=NULL WHERE idAzienda = :idAzienda AND idUniversita = :idUniversita";
                     $stmnt2 = $this->pdo->prepare($sql2);
                     $stmnt2->execute([
                         'idAzienda' => $convention['idAzienda'],
                         'idUniversita' => $convention['idUniversita'],
-                        'date' => $convention['DataStipulazione']
                     ]);
                 }
             }
             $stmnt->execute(['idAzienda' => $idAzienda]);
             $updatedConventions = $stmnt->fetchAll(PDO::FETCH_ASSOC);
             return response()->json([
-                'message' => 'Conventions fetched successfully',
+                'message' => 'Conventions fetched and updated successfully',
                 'conventions' => $updatedConventions
             ], Response::HTTP_OK);
         } catch (PDOException $e) {
