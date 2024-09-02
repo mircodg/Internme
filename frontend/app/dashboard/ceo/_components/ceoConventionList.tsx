@@ -34,13 +34,14 @@ interface CeoConventionListProps {
 
 const handleRenew = async (universityName: string) => {
   try {
+    const name = universityName.replace(" ", "%20");
     const response = await axios.post(
-      `http://localhost:8000/api/company/convention/renew/${universityName}`,
+      `http://localhost:8000/api/company/convention/renew/${name}`,
       null,
       { withCredentials: true }
     );
     if (response.status === 200) {
-      window.location.reload();
+      console.log(response.data);
     }
   } catch (error) {
     console.error(error);
