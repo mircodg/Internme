@@ -15,7 +15,7 @@ return new class extends Migration
             "CREATE TABLE `Convenzioni` (
                 `idAzienda` int NOT NULL,
                 `idUniversita` int NOT NULL, 
-                `Stato` enum('Pending', 'Active', 'Rejected') NOT NULL DEFAULT 'Pending',
+                `Stato` enum('Pending', 'Active', 'Rejected', 'Expired') NOT NULL DEFAULT 'Pending',
                 `DataStipulazione` date DEFAULT NULL,
                 PRIMARY KEY (`idAzienda`, `idUniversita`),  
                 FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`), 
