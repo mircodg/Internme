@@ -19,7 +19,7 @@ return new class extends Migration
                 `Stelle` int NOT NULL CHECK(Stelle BETWEEN 1 AND 5),
                 `Descrizione` varchar(255) NOT NULL,
                 PRIMARY KEY (`Matricola`, `idUniversita`, `idTirocinio`),
-                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `Studenti` (`Matricola`, `idUniversita`),
+                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `AccountStudente` (`Matricola`, `idUniversita`),
                 FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`)
             )"
         );

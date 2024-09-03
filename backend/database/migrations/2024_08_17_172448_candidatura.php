@@ -16,9 +16,9 @@ return new class extends Migration
                 `Matricola` int NOT NULL,
                 `idUniversita` int NOT NULL,
                 `idTirocinio` int NOT NULL,
-                `Stato` enum('Pending', 'Active', 'Rejected', `Ended`) NOT NULL DEFAULT 'Pending',
+                `Stato` enum('Pending', 'Active', 'Rejected', 'Ended') NOT NULL DEFAULT 'Pending',
                 PRIMARY KEY (`Matricola`, `idUniversita`, `idTirocinio`),
-                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `Studenti` (`Matricola`, `idUniversita`),
+                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `AccountStudente` (`Matricola`, `idUniversita`),
                 FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`)
             )"
         );

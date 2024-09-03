@@ -22,7 +22,8 @@ return new class extends Migration
                 `Provincia` varchar(255) NOT NULL,
                 `idUtente` int NOT NULL,
                 PRIMARY KEY (`idUniversita`), 
-                UNIQUE (`Nome`, `Via`, `NumeroCivico`, `CAP`, `Citta`, `Provincia`),
+                UNIQUE(`Nome`), 
+                UNIQUE (`Via`, `NumeroCivico`, `CAP`, `Citta`, `Provincia`),
                 FOREIGN KEY (`idUtente`) REFERENCES `Utenti`(`idUtente`)
             )"
         );

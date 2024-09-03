@@ -12,14 +12,13 @@ return new class extends Migration
     {
         $pdo = DB::connection()->getPdo();
         $pdo->exec(
-            "CREATE TABLE `AccountStudente` (
-                `Matricola` int NOT NULL,
-                `idUniversita` int NOT NULL,
-                `idUtente` int NOT NULL,
-                `CV` varchar(255) NOT NULL,
-                `CDL` varchar(255) NOT NULL,
-                PRIMARY KEY (`Matricola`, `idUniversita`),
-                FOREIGN KEY (`idUtente`) REFERENCES `Utenti` (`idUtente`), 
+            "CREATE TABLE `Convenzioni` (
+                `idAzienda` int NOT NULL,
+                `idUniversita` int NOT NULL, 
+                `Stato` enum('Pending', 'Active', 'Rejected', 'Expired') NOT NULL DEFAULT 'Pending',
+                `DataStipulazione` date DEFAULT NULL,
+                PRIMARY KEY (`idAzienda`, `idUniversita`),  
+                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`), 
                 FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`)
             )"
         );
@@ -31,6 +30,6 @@ return new class extends Migration
     public function down(): void
     {
         $pdo = DB::connection()->getPdo();
-        $pdo->exec("DROP TABLE `Studenti`");
+        $pdo->exec("DROP TABLE `Convenzioni`");
     }
 };
