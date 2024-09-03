@@ -10,7 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $pdo = DB::connection()->getPdo(); 
+        $pdo = DB::connection()->getPdo();
         $pdo->exec(
             "CREATE TABLE `Sedi` (
                 `Via` varchar(255) NOT NULL,
@@ -19,7 +19,7 @@ return new class extends Migration
                 `Citta` varchar(255) NOT NULL,
                 `Provincia` varchar(255) NOT NULL,
                 `idAzienda` int NOT NULL,
-                PRIMARY KEY (`Citta`, `idAzienda`), 
+                UNIQUE (`Via`, `NumeroCivico`, `CAP`, `Citta`, `Provincia`),
                 FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`)
             )"
         );

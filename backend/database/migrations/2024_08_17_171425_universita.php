@@ -15,12 +15,17 @@ return new class extends Migration
             "CREATE TABLE `Universita` (
                 `idUniversita` int NOT NULL AUTO_INCREMENT,
                 `Nome` varchar(255) NOT NULL,
+                `Via` varchar(255) NOT NULL,
+                `NumeroCivico` int NOT NULL,
+                `CAP` int NOT NULL,
+                `Citta` varchar(255) NOT NULL,
+                `Provincia` varchar(255) NOT NULL,
                 `idUtente` int NOT NULL,
                 PRIMARY KEY (`idUniversita`), 
-                UNIQUE (`Nome`),
+                UNIQUE (`Nome`, `Via`, `NumeroCivico`, `CAP`, `Citta`, `Provincia`),
                 FOREIGN KEY (`idUtente`) REFERENCES `Utenti`(`idUtente`)
             )"
-        ); 
+        );
     }
 
     /**
