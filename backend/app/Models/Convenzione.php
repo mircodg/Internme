@@ -268,4 +268,29 @@ class Convenzione extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getActiveConvention($idAzienda)
+    {
+        try {
+            $sql = "SELECT Nome,Stato,DataStipulazione,Convenzioni.idUniversita,idAzienda FROM Convenzioni JOIN Universita ON Convenzioni.idUniversita = Universita.idUniversita WHERE idAzienda = :idAzienda AND Stato = 'Active'";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute(['idAzienda' => $idAzienda]);
+            $count = $stmnt->rowCount();
+            if ($count === 0) {
+                return response()->json([
+                    'message' => 'No active conventions found for this company'
+                ], Response::HTTP_NOT_FOUND);
+            }
+            $convention = $stmnt->fetchAll(PDO::FETCH_ASSOC);
+            return response()->json([
+                'message' => 'Active conventions fetched successfully',
+                'conventions' => $convention
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while fetching active conventions',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

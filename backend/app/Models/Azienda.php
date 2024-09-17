@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use PDOException;
 use PDO;
 use App\Models\Utente;
-use Exception;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Sede;
 
@@ -95,6 +94,37 @@ class Azienda extends Model
         } catch (PDOException $e) {
             return response()->json([
                 'message' => 'Error while getting company',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public function getCompanyInfoAndSites($token)
+    {
+        # not using JOIN for better handling on frontend. I split company data and sites addresses. 
+        try {
+            #fetchin company 
+
+            $response = $this->getAziendaByToken($token);
+            $data = $response->getData(true);
+            $azienda = $data['azienda'];
+
+            # fetching sites: 
+            $sql = "SELECT * FROM Sedi WHERE idAzienda = :idAzienda";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idAzienda' => $azienda['idAzienda']
+            ]);
+            $sites = $stmnt->fetchAll(PDO::FETCH_ASSOC);
+            return response()->json([
+                'message' => 'Company and sites info fetched successfully',
+                'company' => $azienda,
+                'sites' => $sites
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while getting company and sites info',
                 'error' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

@@ -73,4 +73,121 @@ class Tirocinio extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getActiveInterns($idTirocinio)
+    {
+        try {
+
+            // # making sure the internship belongs to the company
+            // $sql = "SELECT * FROM Tirocini WHERE idTirocinio = :idTirocinio AND idAzienda = :idAzienda";
+            // $stmnt = $this->pdo->prepare($sql);
+            // $stmnt->execute([
+            //     'idTirocinio' => $idTirocinio,
+            //     'idAzienda' => $idAzienda
+            // ]);
+            // if ($stmnt->rowCount() == 0) {
+            //     return response()->json([
+            //         'message' => 'you are not authorized to fetch active interns for this internship'
+            //     ], Response::HTTP_UNAUTHORIZED);
+            // }
+
+            # fetching active interns 
+            $sql = "SELECT COUNT(*) as count FROM Candidature WHERE idTirocinio = :idTirocinio AND Stato = 'Active'";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idTirocinio' => $idTirocinio
+            ]);
+            $count = $stmnt->fetch(PDO::FETCH_ASSOC);
+            return response()->json([
+                'message' => 'Active interns fetched successfully',
+                'count' => $count
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while fetching active interns',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function endInternship($idTirocinio, $Matricola, $idUniversita)
+    {
+        try {
+            $sql = "UPDATE Candidature SET Stato='Ended' WHERE idTirocinio = :idTirocinio AND Matricola = :Matricola AND idUniversita=:idUniversita";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idTirocinio' => $idTirocinio,
+                'Matricola' => $Matricola,
+                'idUniversita' => $idUniversita,
+            ]);
+            return response()->json([
+                'message' => 'Internship ended succesfully'
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while ending Internship',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getFullCompanyInternship($idAzienda)
+    {
+        try {
+            $sql = "SELECT * FROM Tirocini WHERE MaxTirocinanti = (SELECT COUNT(*) FROM Candidature WHERE idTirocinio = Tirocini.idTirocinio AND Stato = 'Active') AND idAzienda = :idAzienda";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idAzienda' => $idAzienda
+            ]);
+            return response()->json([
+                'message' => 'Full internships fetched successfully',
+                'internships' => $stmnt->fetchAll(PDO::FETCH_ASSOC)
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while fetching full internships',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getActiveCompanyInternship($idAzienda)
+    {
+        try {
+            $sql = "SELECT * FROM Tirocini WHERE MaxTirocinanti > (SELECT COUNT(*) FROM Candidature WHERE idTirocinio = Tirocini.idTirocinio AND Stato = 'Active') AND idAzienda = :idAzienda";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idAzienda' => $idAzienda
+            ]);
+            return response()->json([
+                'message' => 'Active internships fetched successfully',
+                'internships' => $stmnt->fetchAll(PDO::FETCH_ASSOC)
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while fetching active internships',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function removeInternship($idTirocinio, $idAzienda)
+    {
+        try {
+            $sql = "DELETE FROM Tirocini WHERE idTirocinio = :idTirocinio AND idAzienda = :idAzienda";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'idTirocinio' => $idTirocinio,
+                'idAzienda' => $idAzienda
+            ]);
+            return response()->json([
+                'message' => 'Internship removed successfully'
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while removing internship',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -24,7 +24,7 @@ class Universita extends Model
         $this->pdo = DB::connection()->getPdo();
     }
 
-    public function insertUniversita($nomeUniversita, $token)
+    public function insertUniversita($nomeUniversita, $Via, $NumeroCivico, $CAP, $Citta, $Provincia, $token)
     {
         try {
             $user = new Utente();
@@ -39,10 +39,15 @@ class Universita extends Model
 
             $userID = $data['user']['idUtente'];
 
-            $sql = "INSERT INTO Universita (Nome, idUtente) VALUES (:nomeUniversita, :idUtente)";
+            $sql = "INSERT INTO Universita (Nome, Via, NumeroCivico, CAP, Citta, Provincia, idUtente) VALUES (:nomeUniversita,:Via, :NumeroCivico, :CAP, :Citta, :Provincia, :idUtente)";
             $stmnt = $this->pdo->prepare($sql);
             $stmnt = $stmnt->execute([
                 'nomeUniversita' => $nomeUniversita,
+                'Via' => $Via,
+                'NumeroCivico' => $NumeroCivico,
+                'CAP' => $CAP,
+                'Citta' => $Citta,
+                'Provincia' => $Provincia,
                 'idUtente' => $userID
             ]);
             $sql = "SELECT * FROM Universita WHERE Nome = :nomeUniversita";
@@ -105,7 +110,7 @@ class Universita extends Model
             $response = $universita->getUniFromToken($token);
             $data = $response->getData(true);
 
-            $sql = "SELECT * FROM Studenti WHERE idUniversita = :idUniversita";
+            $sql = "SELECT * FROM AccountStudente WHERE idUniversita = :idUniversita";
             $stmnt = $this->pdo->prepare(($sql));
             $stmnt->execute([
                 'idUniversita' => $data['university']['idUniversita']
