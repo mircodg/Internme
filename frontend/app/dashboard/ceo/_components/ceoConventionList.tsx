@@ -41,7 +41,7 @@ const handleRenew = async (universityName: string) => {
       { withCredentials: true }
     );
     if (response.status === 200) {
-      console.log(response.data);
+      window.location.reload();
     }
   } catch (error) {
     console.error(error);
@@ -50,9 +50,8 @@ const handleRenew = async (universityName: string) => {
 
 const handleRemove = async (universityName: string) => {
   try {
-    const response = await axios.post(
+    const response = await axios.delete(
       `http://localhost:8000/api/company/convention/remove/${universityName}`,
-      null,
       { withCredentials: true }
     );
     if (response.status === 200) {
@@ -100,10 +99,10 @@ function CeoConventionList({
                     variant={"outline"}
                     className={
                       convention.Status === "Pending"
-                        ? "bg-yellow-500"
+                        ? "bg-yellow-500 text-white"
                         : convention.Status === "Active"
-                        ? "bg-green-500"
-                        : "bg-red-500"
+                        ? "bg-green-500 text-white"
+                        : "bg-red-500 text-white"
                     }
                   >
                     {convention.Status}

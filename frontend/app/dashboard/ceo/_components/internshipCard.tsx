@@ -1,5 +1,12 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowUpRight } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ArrowUpRight, Trash2 } from "lucide-react";
+import axios from "axios";
 
 import {
   Dialog,
@@ -13,8 +20,47 @@ import {
 } from "@/components/ui/dialog";
 
 import type { internshipsData } from "@/app/dashboard/ceo/_components/internshipList";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/use-toast";
+
+const handleApplication = async (InternshipID: any) => {
+  try {
+    if (InternshipID === undefined) return;
+    await axios.post(
+      `http://localhost:8000/api/student/apply/${InternshipID}`,
+      null,
+      {
+        withCredentials: true,
+      }
+    );
+    window.location.reload();
+  } catch (error) {
+    toast({
+      description: "You have already have an active internship",
+      variant: "destructive",
+    });
+  }
+};
+
+const handleRemoveInternship = async (InternshipID: number | undefined) => {
+  try {
+    await axios.delete(
+      `http://localhost:8000/api/internship/remove/${InternshipID}`,
+      {
+        withCredentials: true,
+      }
+    );
+    window.location.reload();
+  } catch (err: any) {
+    toast({
+      description: err.response.data.message,
+      variant: "destructive",
+    });
+  }
+};
 
 function InternshipCard({
+  InternshipID,
   title,
   description,
   Internshiptype,
@@ -22,6 +68,8 @@ function InternshipCard({
   MaxInterns,
   CDL,
   Pay,
+  Candidate,
+  ActiveInterns,
 }: internshipsData) {
   return (
     // <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -35,7 +83,7 @@ function InternshipCard({
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:transition-transform group-hover:translate-x-1" />
               </CardHeader>
               <CardContent>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground hidden md:block">
                   {description?.length > 20
                     ? description.substring(0, 50) + "..."
                     : description}
@@ -69,19 +117,47 @@ function InternshipCard({
                   <p className="text-sm">{CDL}</p>
                 </div>
                 <div className=" flex md:flex-col w-full justify-center items-start md:justify-start md:items-start gap-1">
-                  <h3 className="text-sm font-semibold">Pay:</h3>
+                  <h3 className="text-sm font-semibold">Payment:</h3>
                   {Pay ? (
-                    <p className="text-sm">{Pay}</p>
+                    <p className="text-sm">{Pay}€</p>
                   ) : (
                     <p className="text-sm">Not Available</p>
                   )}
                 </div>
+                <div className=" flex md:flex-col w-full justify-center items-start md:justify-start md:items-start gap-1">
+                  <h3 className="text-sm font-semibold">Active Interns:</h3>
+                  <p className="text-sm">{ActiveInterns}</p>
+                </div>
               </div>
             </DialogHeader>
+            {Candidate && (
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button
+                    onClick={() => handleApplication(InternshipID)}
+                    disabled={MaxInterns > ActiveInterns ? false : true}
+                  >
+                    Apply
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            )}
+            {ActiveInterns === 0 && !Candidate && (
+              <DialogFooter>
+                <DialogClose
+                  asChild
+                  onClick={() => handleRemoveInternship(InternshipID)}
+                >
+                  <Button size={"sm"} className="gap-2" variant={"destructive"}>
+                    <Trash2 className="h-[1.2rem] w-[1.2rem]" />
+                    Delete
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            )}
           </DialogContent>
         </Dialog>
       </div>
-      {/* <CardAndHover /> */}
     </div>
   );
 }

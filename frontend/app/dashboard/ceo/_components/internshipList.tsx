@@ -22,42 +22,64 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
+import { toast } from "@/components/ui/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CreateInternshipFormSchema = z.object({
+  InternshipID: z.number().optional(),
   title: z.string(),
   description: z.string(),
-  type: z.union([z.literal("Intra-curricular"), z.literal("Extra-curricular")]),
-  mode: z.union([z.literal("Remote"), z.literal("In place")]),
+  type: z.string(),
+  mode: z.string(),
   maxInterns: z.preprocess(
     (val) => parseInt(val as string),
-    z.number().refine((val) => val > 0 && val < 6)
+    z.number().refine((val) => val > 0)
   ),
   cdl: z.string().refine((val) => val.length > 1),
   pay: z.preprocess(
     (val) => (val === "" ? (val = 0) : parseInt(val as string)),
     z.number().optional()
   ),
+  ActiveInterns: z.preprocess(
+    (val) =>
+      val === undefined || val === null ? (val = 0) : parseInt(val as string),
+    z.number().int()
+  ),
 });
 
-type Inputs = z.infer<typeof CreateInternshipFormSchema>;
+export type Inputs = z.infer<typeof CreateInternshipFormSchema>;
 
 export type internshipsData = {
+  InternshipID?: number;
   title: string;
   description: string;
-  Internshiptype: "Intra-curricular" | "Extra-curricular";
-  Mode: "Remote" | "In place";
+  Internshiptype: string;
+  Mode: string;
   MaxInterns: number;
   CDL: string;
   Pay?: number;
+  Candidate?: boolean;
+  ActiveInterns: number;
 };
 
 function InternshipList() {
   const [internships, setInternships] = useState<internshipsData[]>([]);
   const [isopen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [tabValue, setTabValue] = useState("all");
+  // const hasFetched = useRef(false);
 
   useEffect(() => {
-    const fetchInternships = async () => {
+    // if (hasFetched.current) return;
+    // hasFetched.current = true;
+    const fetchAllInternships = async () => {
       try {
         setLoading(true);
         const response = await axios.get(
@@ -67,9 +89,13 @@ function InternshipList() {
           }
         );
         const internshipsArray = response.data.tirocini;
-        console.log(internshipsArray);
-        internshipsArray.forEach((internship: any) => {
+        const promises = internshipsArray.map(async (internship: any) => {
+          const response = await axios.get(
+            `http://localhost:8000/api/company/internship/activeinterns/${internship.idTirocinio}`,
+            { withCredentials: true }
+          );
           const newInternship: internshipsData = {
+            InternshipID: internship.idTirocinio,
             title: internship.Titolo,
             description: internship.Descrizione,
             Internshiptype: internship.TipoTirocinio,
@@ -77,22 +103,116 @@ function InternshipList() {
             MaxInterns: internship.MaxTirocinanti,
             CDL: internship.CDL_Richiesto,
             Pay: internship.Retribuzione,
+            // ActiveInterns: parseInt(count),
+            ActiveInterns: response.data.count.count,
           };
-          if (!internships.includes(newInternship)) {
+          if (
+            !internships.some(
+              (element) => element.InternshipID === newInternship.InternshipID
+            )
+          ) {
             internships.push(newInternship);
           }
         });
+        await Promise.all(promises);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
-        setInternships([]);
-      } finally {
+        console.error(error);
+        // setInternships([]);
         setLoading(false);
       }
     };
 
-    fetchInternships();
-    console.log(internships);
-  }, [internships]);
+    const fetchActiveInternships = async () => {
+      try {
+        setLoading(true);
+        setInternships([]);
+        const response = await axios.get(
+          "http://localhost:8000/api/company/internship/active",
+          {
+            withCredentials: true,
+          }
+        );
+        const internshipsArray = response.data.internships;
+        const promises = internshipsArray.map(async (internship: any) => {
+          const response = await axios.get(
+            `http://localhost:8000/api/company/internship/activeinterns/${internship.idTirocinio}`,
+            { withCredentials: true }
+          );
+          const newInternship: internshipsData = {
+            InternshipID: internship.idTirocinio,
+            title: internship.Titolo,
+            description: internship.Descrizione,
+            Internshiptype: internship.TipoTirocinio,
+            Mode: internship.TipoSvolgimento,
+            MaxInterns: internship.MaxTirocinanti,
+            CDL: internship.CDL_Richiesto,
+            Pay: internship.Retribuzione,
+            // ActiveInterns: parseInt(count),
+            ActiveInterns: response.data.count.count,
+          };
+          setInternships((internships) => [...internships, newInternship]);
+        });
+        await Promise.all(promises);
+        setLoading(false);
+      } catch (error: any) {
+        toast({
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+        setLoading(false);
+      }
+    };
+
+    const fetchFullInternships = async () => {
+      try {
+        setLoading(true);
+        setInternships([]);
+        const response = await axios.get(
+          "http://localhost:8000/api/company/internship/full",
+          {
+            withCredentials: true,
+          }
+        );
+        const internshipsArray = response.data.internships;
+        const promises = internshipsArray.map(async (internship: any) => {
+          const response = await axios.get(
+            `http://localhost:8000/api/company/internship/activeinterns/${internship.idTirocinio}`,
+            { withCredentials: true }
+          );
+          const newInternship: internshipsData = {
+            InternshipID: internship.idTirocinio,
+            title: internship.Titolo,
+            description: internship.Descrizione,
+            Internshiptype: internship.TipoTirocinio,
+            Mode: internship.TipoSvolgimento,
+            MaxInterns: internship.MaxTirocinanti,
+            CDL: internship.CDL_Richiesto,
+            Pay: internship.Retribuzione,
+            // ActiveInterns: parseInt(count),
+            ActiveInterns: response.data.count.count,
+          };
+          setInternships((internships) => [...internships, newInternship]);
+        });
+        await Promise.all(promises);
+        setLoading(false);
+      } catch (error: any) {
+        toast({
+          description: error.response.data.message,
+          variant: "destructive",
+        });
+        setLoading(false);
+      }
+    };
+
+    if (tabValue === "active") fetchActiveInternships();
+    if (tabValue === "full") fetchFullInternships();
+    if (tabValue === "all") fetchAllInternships();
+  }, [tabValue]);
+
+  const onError = (error: any) => {
+    console.log("Form errors: " + JSON.stringify(error, null, 2));
+  };
 
   const submitHandler: SubmitHandler<Inputs> = (data) => {
     const newInternship: internshipsData = {
@@ -103,9 +223,14 @@ function InternshipList() {
       MaxInterns: data.maxInterns,
       CDL: data.cdl,
       Pay: data.pay,
+      ActiveInterns: data.ActiveInterns,
     };
-    if (!internships.includes(newInternship)) {
-      internships.push(newInternship);
+    if (
+      !internships.some(
+        (element) => element.InternshipID === newInternship.InternshipID
+      )
+    ) {
+      setInternships((internships) => [...internships, newInternship]);
     }
     try {
       const response = axios.post(
@@ -116,8 +241,12 @@ function InternshipList() {
         }
       );
       setIsOpen(false);
-    } catch (error) {
-      console.log(error);
+      window.location.reload();
+    } catch (error: any) {
+      toast({
+        description: error.response.data.message,
+        variant: "destructive",
+      });
       setIsOpen(true);
     }
     reset();
@@ -127,13 +256,14 @@ function InternshipList() {
     register,
     reset,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
   } = useForm<Inputs>({ resolver: zodResolver(CreateInternshipFormSchema) });
 
   return (
     <>
       <div className="flex items-center">
-        <Tabs value="all">
+        <Tabs onValueChange={(value) => setTabValue(value)} value={tabValue}>
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="active">Active</TabsTrigger>
@@ -147,7 +277,7 @@ function InternshipList() {
             <DialogTrigger asChild>
               <Button
                 size="sm"
-                className="h-8 gap-1"
+                className="h-8 gap-1 hover:cursor-pointer"
                 asChild
                 onClick={() => setIsOpen(true)}
               >
@@ -168,7 +298,7 @@ function InternshipList() {
                   Add a new post to the internship list
                 </DialogDescription>
               </DialogHeader>
-              <form onSubmit={handleSubmit(submitHandler)}>
+              <form onSubmit={handleSubmit(submitHandler, onError)}>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="title">Title</Label>
@@ -194,22 +324,36 @@ function InternshipList() {
                   </div>
                   <div>
                     <Label htmlFor="type">Type</Label>
-                    <Input
-                      type="text"
-                      id="type"
-                      placeholder="Intra/Extra Curricular"
-                      {...register("type", { required: true })}
-                    />
+                    <Select onValueChange={(value) => setValue("type", value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="Intra-curricular">
+                            Intra-curricular
+                          </SelectItem>
+                          <SelectItem value="Extra-curricular">
+                            Extra-curricular
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     {errors.type && <span>{errors.type.message}</span>}
                   </div>
                   <div>
                     <Label htmlFor="mode">Mode</Label>
-                    <Input
-                      type="text"
-                      id="mode"
-                      placeholder="Remote/In place"
-                      {...register("mode", { required: true })}
-                    />
+                    <Select onValueChange={(value) => setValue("mode", value)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="select mode" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="Remote">Remote</SelectItem>
+                          <SelectItem value="In place">In place</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                     {errors.mode && <span>{errors.mode.message}</span>}
                   </div>
                   <div>
@@ -247,16 +391,17 @@ function InternshipList() {
                 </div>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button variant="outline" onClick={() => setIsOpen(false)}>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setIsOpen(false);
+                        reset();
+                      }}
+                    >
                       Cancel
                     </Button>
                   </DialogClose>
-                  <Button
-                    onClick={() => {
-                      submitHandler;
-                    }}
-                    disabled={!isValid}
-                  >
+                  <Button type="submit" disabled={!isValid}>
                     Add Post
                   </Button>
                 </DialogFooter>
@@ -266,21 +411,42 @@ function InternshipList() {
         </div>
       </div>
       <div className="my-4 grid grid-cols-1 md:grid-cols-5 gap-4">
-        {internships.map((internship, index) => {
-          return (
-            <InternshipCard
-              key={index}
-              title={internship.title}
-              description={internship.description}
-              Mode={internship.Mode}
-              MaxInterns={internship.MaxInterns}
-              CDL={internship.CDL}
-              Pay={internship.Pay}
-              Internshiptype={internship.Internshiptype}
-            />
-          );
-        })}
+        {loading && <p>Loading...</p>}
+        {!loading &&
+          internships.length > 0 &&
+          internships.map((internship, index) => {
+            return (
+              <InternshipCard
+                key={index}
+                InternshipID={internship.InternshipID}
+                title={internship.title}
+                description={internship.description}
+                Mode={internship.Mode}
+                MaxInterns={internship.MaxInterns}
+                CDL={internship.CDL}
+                Pay={internship.Pay}
+                Internshiptype={internship.Internshiptype}
+                Candidate={false}
+                ActiveInterns={internship.ActiveInterns}
+              />
+            );
+          })}
       </div>
+      {!loading && internships.length === 0 && (
+        <div className="flex justify-center items-center">
+          {tabValue === "active" ? (
+            <p className="font-semibold">
+              No active internships available. Add a new one!
+            </p>
+          ) : tabValue === "full" ? (
+            <p className="font-semibold">No full internships available</p>
+          ) : (
+            <p className="font-semibold">
+              No internships available. Add a new one!
+            </p>
+          )}
+        </div>
+      )}
     </>
   );
 }

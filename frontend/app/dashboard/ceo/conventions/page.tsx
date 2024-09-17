@@ -26,8 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { SelectGroup, SelectLabel } from "@radix-ui/react-select";
-// import { DialogDescription } from "@radix-ui/react-dialog";
 
 export type convention = {
   UniversityName: string;
@@ -37,12 +35,16 @@ export type convention = {
 
 function CeoConventionsPage() {
   const [conventionsList, setConventionList] = useState<convention[]>([]);
+  const [activeConventionsList, setActiveConventionsList] = useState<
+    convention[]
+  >([]);
   const [availableUniversities, setAvailableUniversities] = useState<string[]>(
     []
   );
   const [loadingList, setLoadingList] = useState<boolean>(true);
   const [loadingUniversities, setLoadingUniversities] = useState<boolean>(true);
   const [universityName, setUniversityName] = useState<string>("");
+  const [tabValue, setTabValue] = useState<string>("all");
 
   const addConvention = async (universityName: string) => {
     if (!universityName) return;
@@ -61,6 +63,7 @@ function CeoConventionsPage() {
   useEffect(() => {
     const fetchConventions = async () => {
       try {
+        setLoadingList(true);
         const response = await axios.get(
           "http://localhost:8000/api/company/conventions",
           { withCredentials: true }
@@ -91,7 +94,42 @@ function CeoConventionsPage() {
         setLoadingList(false);
       }
     };
-    fetchConventions();
+
+    const fetchActiveCoonventions = async () => {
+      try {
+        setLoadingList(true);
+        const response = await axios.get(
+          "http://localhost:8000/api/company/conventions/active/list",
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.status === 200) {
+          const conventionArray = response.data.conventions;
+          conventionArray.forEach((convention: any) => {
+            const newConvention: convention = {
+              UniversityName: convention.Nome,
+              Status: convention.Stato,
+              date: convention.DataStipulazione,
+            };
+            // se non è già presente, aggiungo la nuova convenzione
+            if (
+              !activeConventionsList.some(
+                (element) =>
+                  element.UniversityName === newConvention.UniversityName
+              )
+            ) {
+              activeConventionsList.push(newConvention);
+            }
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        setActiveConventionsList([]);
+      } finally {
+        setLoadingList(false);
+      }
+    };
 
     const fetchAvailableUniversities = async () => {
       try {
@@ -115,13 +153,17 @@ function CeoConventionsPage() {
         setLoadingUniversities(false);
       }
     };
+
+    if (tabValue === "all") fetchConventions();
+    if (tabValue === "active") fetchActiveCoonventions();
+
     fetchAvailableUniversities();
-  }, []);
+  }, [tabValue]);
 
   return (
     <>
       <div className="flex items-center">
-        <Tabs value="all">
+        <Tabs onValueChange={(value) => setTabValue(value)} value={tabValue}>
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="active">Active</TabsTrigger>
@@ -188,12 +230,20 @@ function CeoConventionsPage() {
         </div>
       </div>
       {loadingList && loadingUniversities && <div>Loading...</div>}
-      {!loadingList && !loadingUniversities && (
+      {!loadingList && !loadingUniversities && tabValue === "all" && (
         <CeoConventionList
           firstColumn="University Name"
           secondColumn="Status"
           thirdColumn="Date"
           data={conventionsList}
+        />
+      )}
+      {!loadingList && !loadingUniversities && tabValue === "active" && (
+        <CeoConventionList
+          firstColumn="University Name"
+          secondColumn="Status"
+          thirdColumn="Date"
+          data={activeConventionsList}
         />
       )}
     </>
