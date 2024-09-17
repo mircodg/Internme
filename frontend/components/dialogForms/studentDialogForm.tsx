@@ -29,7 +29,11 @@ import {
 
 type Inputs = z.infer<typeof studentDialogSchema>;
 
-function StudentDialogForm() {
+interface StudentDialogFormProps {
+  handleSetEnrollment: () => void;
+}
+
+function StudentDialogForm({ handleSetEnrollment }: StudentDialogFormProps) {
   const [open, setOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isUniversityLoading, setIsUniversityLoading] = useState(true);
@@ -82,6 +86,7 @@ function StudentDialogForm() {
       );
       if (response.status === 200) {
         setOpen(false);
+        handleSetEnrollment();
       }
     } catch (error) {
       console.error(error);

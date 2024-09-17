@@ -1,34 +1,7 @@
-// import { cookies } from "next/headers";
-// import LandingNavbar from "./Landing/LandingNavbar";
-// import axios from "axios";
-
-// const Navbar = async () => {
-//   if (cookies().get("jwt")) {
-//     try {
-//       let response = await axios.get("http://localhost:8000/api/user", {
-//         withCredentials: true,
-//       });
-//       var userRole = response.data.user.tipoUtente;
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-//   return (
-//     <div>
-//       {cookies().get("jwt") ? (
-//         <LandingNavbar isAuthenticated={true} role={`${userRole}`} />
-//       ) : (
-//         <LandingNavbar isAuthenticated={false} />
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Navbar;
 "use client";
 import LandingNavbar from "./Landing/LandingNavbar";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 type userTypes = "student" | "director" | "ceo";
 
@@ -36,6 +9,7 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState<userTypes>();
   const [isLoading, setIsLoading] = useState(true);
+  const hasFetched = useRef(false);
 
   const checkCookie = async () => {
     try {
@@ -51,6 +25,8 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     const fetchData = async () => {
       let jwt = await checkCookie();
       if (jwt) {
@@ -65,7 +41,7 @@ const Navbar = () => {
     };
 
     fetchData();
-  });
+  }, []);
 
   return !isLoading ? (
     <LandingNavbar isAuthenticated={isAuthenticated} role={role} />

@@ -37,8 +37,8 @@ const RegisterTypeform = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="academic">Academic</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
+                  <SelectItem value="academic">Director</SelectItem>
+                  <SelectItem value="business">Ceo</SelectItem>
                   <SelectItem value="student">Student</SelectItem>
                 </SelectGroup>
               </SelectContent>

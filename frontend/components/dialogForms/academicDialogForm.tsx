@@ -22,7 +22,11 @@ import { LoaderCircle } from "lucide-react";
 
 type Inputs = z.infer<typeof academicDialogSchema>;
 
-function AcademicDialogForm() {
+interface AcademicDialogFormProps {
+  handleSetUniversity: () => void;
+}
+
+function AcademicDialogForm({ handleSetUniversity }: AcademicDialogFormProps) {
   const [open, setOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,6 +38,7 @@ function AcademicDialogForm() {
         withCredentials: true,
       });
       setOpen(!open);
+      handleSetUniversity();
     } catch (error) {
       console.error(error);
     } finally {

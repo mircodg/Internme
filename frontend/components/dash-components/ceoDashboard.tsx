@@ -13,7 +13,6 @@ function CeoDashboard() {
   useEffect(() => {
     const company = async () => {
       try {
-        setIsLoading(true);
         const response = await axios.get("http://localhost:8000/api/company", {
           withCredentials: true,
         });
@@ -22,26 +21,23 @@ function CeoDashboard() {
           response.data.message === "Company found"
         ) {
           setHasCompany(true);
+          setIsLoading(false);
+        } else {
+          setIsLoading(true);
         }
       } catch (error) {
         console.error(error);
-        setHasCompany(false);
-      } finally {
-        setIsLoading(false);
+        setIsLoading(true);
       }
     };
     company();
   }, [hasCompany]);
+
   return (
     <>
-      {isLoading ? (
-        <div className="flex justify-center items-center h-screen w-screen">
-          <LoaderCircle className="animate-spin" />
-        </div>
-      ) : !isLoading && hasCompany ? (
-        <CeoDashContent />
-      ) : (
-        <CeoDialogForm />
+      {!isLoading && hasCompany && <CeoDashContent />}
+      {isLoading && !hasCompany && (
+        <CeoDialogForm handleSetCompany={() => setHasCompany(true)} />
       )}
     </>
   );

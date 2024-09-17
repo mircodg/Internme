@@ -38,13 +38,6 @@ import Image from "next/image";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRouter, usePathname } from "next/navigation";
 import clsx from "clsx";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "../ui/breadcrumb";
 import { ModeToggle } from "../ToggleTheme";
 
 type NavItem = {
@@ -54,11 +47,6 @@ type NavItem = {
 };
 
 const student: NavItem[] = [
-  {
-    title: "Internships",
-    icon: BriefcaseBusiness,
-    href: "/dashboard/student/internships",
-  },
   {
     title: "Applications",
     icon: FilePen,
@@ -81,9 +69,9 @@ const director: NavItem[] = [
 
 const ceo: NavItem[] = [
   {
-    title: "Internships",
-    icon: BriefcaseBusiness,
-    href: "/dashboard/ceo/internships",
+    title: "Conventions",
+    icon: Handshake,
+    href: "/dashboard/ceo/conventions",
   },
   {
     title: "Applications",
@@ -120,6 +108,10 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
     }
   };
 
+  const handleSettings = () => {
+    router.push(`/dashboard/${role}/settings`);
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -139,7 +131,7 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                   className={clsx(
                     "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
                     {
-                      "flex h-9 w-9 items-center justify-center rounded-lg bg-accent dark:text-white text-black transition-colors hover:text-foreground md:h-8 md:w-8":
+                      "flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-foreground md:h-8 md:w-8":
                         pathname === `/dashboard/${role}`,
                     }
                   )}
@@ -158,7 +150,7 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                     className={clsx(
                       "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
                       {
-                        "flex h-9 w-9 items-center justify-center rounded-lg bg-accent dark:text-white text-black transition-colors hover:text-foreground md:h-8 md:w-8":
+                        "flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-primary transition-colors hover:text-foreground md:h-8 md:w-8":
                           pathname ===
                           `/dashboard/${role}/${item.title.toLowerCase()}`,
                       }
@@ -178,8 +170,14 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="#"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                  href={`/dashboard/${role}/settings`}
+                  className={clsx(
+                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                    {
+                      "flex h-9 w-9 items-center justify-center rounded-lg  text-primary transition-colors hover:text-foreground md:h-8 md:w-8":
+                        pathname === `/dashboard/${role}/settings`,
+                    }
+                  )}
                 >
                   <Settings className="h-5 w-5" />
                   <span className="sr-only">Settings</span>
@@ -226,7 +224,7 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
                   </Link>
                 ))}
                 <Link
-                  href="#"
+                  href={`/dashboard/${role}/settings`}
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
                   <Settings className="h-5 w-5" />
@@ -281,7 +279,9 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem onSelect={handleSettings}>
+                Settings
+              </DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={handleLogout}>

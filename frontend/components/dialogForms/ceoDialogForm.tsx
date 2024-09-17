@@ -22,7 +22,11 @@ import { useState } from "react";
 
 type Inputs = z.infer<typeof businessDialogSchema>;
 
-function CeoDialogForm() {
+interface CeoDialogFormProps {
+  handleSetCompany: () => void;
+}
+
+function CeoDialogForm({ handleSetCompany }: CeoDialogFormProps) {
   const [open, setOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,6 +46,7 @@ function CeoDialogForm() {
         withCredentials: true,
       });
       setOpen(false);
+      handleSetCompany();
     } catch (error) {
       console.error(error);
     } finally {
