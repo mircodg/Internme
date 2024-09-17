@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Universita;
 use App\Models\Studente;
-use App\Models\IndirizziUniversita;
 use App\Models\Convenzione;
 
 class UniversitaController extends Controller
@@ -13,10 +12,7 @@ class UniversitaController extends Controller
     function addUniversita(Request $req)
     {
         $universita = new Universita();
-        $indirizzoUni = new IndirizziUniversita();
-        $response = $universita->insertUniversita($req->NomeUniversita, $req->cookie('jwt'));
-        $newUni = $response->getData(true);
-        return $indirizzoUni->insertUniAddress($req->Via, $req->NumeroCivico, $req->CAP, $req->Citta, $req->Provincia, $newUni['university']['idUniversita']);
+        return $universita->insertUniversita($req->NomeUniversita, $req->Via, $req->NumeroCivico, $req->CAP, $req->Citta, $req->Provincia, $req->cookie('jwt'));
     }
 
     function getUni(Request $req)
@@ -29,15 +25,6 @@ class UniversitaController extends Controller
     {
         $universita = new Universita();
         return $universita->studentsCount($req->cookie('jwt'));
-    }
-
-    function getCompaniesCount(Request $req)
-    {
-        $universita = new Universita();
-        $response = $universita->getUniFromToken($req->cookie('jwt'));
-        $data = $response->getData(true);
-        $idUniversita = $data['university']['idUniversita'];
-        //TODO: get companies count through model Stipulazioni 
     }
 
     function showAllUni()
