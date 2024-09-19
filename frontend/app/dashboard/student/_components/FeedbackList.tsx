@@ -72,9 +72,6 @@ function FeedbackList({ mode }: FeedbackListProps) {
         setLoading(false);
       }
     } catch (error: any) {
-      toast({
-        description: error.response.data.message,
-      });
       setStudentsFeedbacks([]);
       setLoading(false);
     }

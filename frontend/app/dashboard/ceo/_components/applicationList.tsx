@@ -313,15 +313,15 @@ function ApplicationList({ mode }: ApplicationListProps) {
             <TableRow>
               {mode !== "student" && (
                 <>
-                  <TableHead>Matricola</TableHead>
+                  <TableHead>Student ID</TableHead>
                   <TableHead className="hidden md:table-cell">
                     Università
                   </TableHead>
                 </>
               )}
-              <TableHead className="hidden md:table-cell">Tirocinio</TableHead>
+              <TableHead className="hidden md:table-cell">Internship</TableHead>
               {mode === "student" && (
-                <TableHead className="hidden md:table-cell">Azienda</TableHead>
+                <TableHead className="hidden md:table-cell">Company</TableHead>
               )}
               <TableHead className="hidden md:table-cell">Status</TableHead>
               <TableHead className="hidden md:table-cell">Actions</TableHead>
