@@ -5,9 +5,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: internme
-      MYSQL_USER: mircodev
-      MYSQL_PASSWORD: mircodevpass
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - 3306:3306
     volumes:
@@ -36,11 +36,11 @@ services:
       dockerfile: Dockerfile
     restart: always
     environment:
-      DB_CONNECTION: mysql
-      DB_HOST: db
-      DB_DATABASE: internme
-      DB_USERNAME: mircodev
-      DB_PASSWORD: mircodevpass
+      DB_CONNECTION: ${DB_CONNECTION}
+      DB_HOST: ${DB_HOST}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./backend:/internme/backend
     ports:
