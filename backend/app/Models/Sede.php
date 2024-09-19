@@ -66,10 +66,10 @@ class Sede extends Model
         }
     }
 
-    public function editSede($idAzienda, $Via, $NumeroCivico, $CAP, $Citta, $Provincia)
+    public function editSede($idAzienda, $Via, $NumeroCivico, $CAP, $Citta, $Provincia, $OldVia, $OldNumeroCivico, $OldCAP, $OldCitta, $OldProvincia)
     {
         try {
-            $sql = "UPDATE Sedi SET Via=:Via, NumeroCivico=:NumeroCivico, CAP=:CAP, Citta=:Citta, Provincia=:Provincia WHERE idAzienda=:idAzienda AND Via=:Via2 AND NumeroCivico=:NumeroCivico2 AND CAP=:CAP2 AND Citta=:Citta2 AND Provincia=:Provincia2";
+            $sql = "UPDATE Sedi SET Via=:Via, NumeroCivico=:NumeroCivico, CAP=:CAP, Citta=:Citta, Provincia=:Provincia WHERE idAzienda=:idAzienda AND Via=:OldVia AND NumeroCivico=:OldNumeroCivico AND CAP=:OldCAP AND Citta=:OldCitta AND Provincia=:OldProvincia";
             $stmnt = $this->pdo->prepare($sql);
             $stmnt->execute([
                 'idAzienda' => $idAzienda,
@@ -78,11 +78,11 @@ class Sede extends Model
                 'CAP' => $CAP,
                 'Citta' => $Citta,
                 'Provincia' => $Provincia,
-                'Via2' => $Via,
-                'NumeroCivico2' => $NumeroCivico,
-                'CAP2' => $CAP,
-                'Citta2' => $Citta,
-                'Provincia2' => $Provincia
+                'OldVia' => $OldVia,
+                'OldNumeroCivico' => $OldNumeroCivico,
+                'OldCAP' => $OldCAP,
+                'OldCitta' => $OldCitta,
+                'OldProvincia' => $OldProvincia
             ]);
             return response()->json([
                 'message' => 'Site edited successfully'

@@ -52,7 +52,7 @@ class SiteController extends Controller
         } else {
             $data = $response->getData(true);
             $idAzienda = $data['azienda']['idAzienda'];
-            return $sede->editSede($idAzienda, $request->input('Via'), $request->input('NumeroCivico'), $request->input('CAP'), $request->input('Citta'), $request->input('Provincia'));
+            return $sede->editSede($idAzienda, $request->input('Via'), $request->input('NumeroCivico'), $request->input('CAP'), $request->input('Citta'), $request->input('Provincia'), $request->input('OldVia'), $request->input('OldNumeroCivico'), $request->input('OldCAP'), $request->input('OldCitta'), $request->input('OldProvincia'));
         }
     }
 }
