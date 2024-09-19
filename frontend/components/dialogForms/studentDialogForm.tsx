@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "../ui/use-toast";
 
 type Inputs = z.infer<typeof studentDialogSchema>;
 
@@ -88,8 +89,15 @@ function StudentDialogForm({ handleSetEnrollment }: StudentDialogFormProps) {
         setOpen(false);
         handleSetEnrollment();
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      toast({
+        description:
+          error.response.data.message + " this window will reload in 5s",
+        variant: "destructive",
+      });
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     } finally {
       setIsLoading(false);
       reset();
@@ -127,7 +135,11 @@ function StudentDialogForm({ handleSetEnrollment }: StudentDialogFormProps) {
             </div>
             <div className="flex flex-col justify-center items-start gap-2">
               <Label htmlFor="university">University</Label>
-              <Select onValueChange={(value) => setValue("Universita", value)}>
+              <Select
+                onValueChange={(value) => {
+                  setValue("Universita", value);
+                }}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select your university" />
                 </SelectTrigger>
