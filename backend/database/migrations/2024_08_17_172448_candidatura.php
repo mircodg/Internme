@@ -18,8 +18,8 @@ return new class extends Migration
                 `idTirocinio` int NOT NULL,
                 `Stato` enum('Pending', 'Active', 'Rejected', 'Ended') NOT NULL DEFAULT 'Pending',
                 PRIMARY KEY (`Matricola`, `idUniversita`, `idTirocinio`),
-                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `AccountStudente` (`Matricola`, `idUniversita`),
-                FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`)
+                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `AccountStudente` (`Matricola`, `idUniversita`) ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }

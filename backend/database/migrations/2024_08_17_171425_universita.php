@@ -24,7 +24,7 @@ return new class extends Migration
                 PRIMARY KEY (`idUniversita`), 
                 UNIQUE(`Nome`), 
                 UNIQUE (`Via`, `NumeroCivico`, `CAP`, `Citta`, `Provincia`),
-                FOREIGN KEY (`idUtente`) REFERENCES `Utenti`(`idUtente`)
+                FOREIGN KEY (`idUtente`) REFERENCES `Utenti`(`idUtente`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }

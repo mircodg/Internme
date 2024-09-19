@@ -23,7 +23,7 @@ return new class extends Migration
                 `Retribuzione` float DEFAULT NULL,
                 `idAzienda` int NOT NULL,
                 PRIMARY KEY (`idTirocinio`), 
-                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`)
+                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }

@@ -20,9 +20,9 @@ return new class extends Migration
                 `idUtente` int NOT NULL,
                 PRIMARY KEY (`idAzienda`),
                 UNIQUE (`PartitaIva`),
-                FOREIGN KEY (`idUtente`) REFERENCES `Utenti` (`idUtente`)
+                FOREIGN KEY (`idUtente`) REFERENCES `Utenti` (`idUtente`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
-        );  
+        );
     }
 
     /**

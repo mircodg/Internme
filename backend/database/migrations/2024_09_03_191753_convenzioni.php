@@ -18,8 +18,8 @@ return new class extends Migration
                 `Stato` enum('Pending', 'Active', 'Rejected', 'Expired') NOT NULL DEFAULT 'Pending',
                 `DataStipulazione` date DEFAULT NULL,
                 PRIMARY KEY (`idAzienda`, `idUniversita`),  
-                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`), 
-                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`)
+                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`) ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }

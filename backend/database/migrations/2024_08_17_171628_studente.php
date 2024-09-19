@@ -19,8 +19,8 @@ return new class extends Migration
                 `CV` varchar(255) NOT NULL,
                 `CDL` varchar(255) NOT NULL,
                 PRIMARY KEY (`Matricola`, `idUniversita`),
-                FOREIGN KEY (`idUtente`) REFERENCES `Utenti` (`idUtente`), 
-                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`)
+                FOREIGN KEY (`idUtente`) REFERENCES `Utenti` (`idUtente`) ON DELETE CASCADE ON UPDATE CASCADE, 
+                FOREIGN KEY (`idUniversita`) REFERENCES `Universita` (`idUniversita`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }

@@ -19,8 +19,8 @@ return new class extends Migration
                 `Stelle` float NOT NULL CHECK(Stelle BETWEEN 1 AND 5),
                 `Descrizione` varchar(255) NOT NULL,
                 PRIMARY KEY (`Matricola`, `idUniversita`, `idTirocinio`),
-                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `AccountStudente` (`Matricola`, `idUniversita`),
-                FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`)
+                FOREIGN KEY (`Matricola`, `idUniversita`) REFERENCES `AccountStudente` (`Matricola`, `idUniversita`) ON DELETE CASCADE ON UPDATE CASCADE,
+                FOREIGN KEY (`idTirocinio`) REFERENCES `Tirocini` (`idTirocinio`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }

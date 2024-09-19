@@ -20,7 +20,7 @@ return new class extends Migration
                 `Provincia` varchar(255) NOT NULL,
                 `idAzienda` int NOT NULL,
                 UNIQUE (`Via`, `NumeroCivico`, `CAP`, `Citta`, `Provincia`),
-                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`)
+                FOREIGN KEY (`idAzienda`) REFERENCES `Aziende` (`idAzienda`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }
