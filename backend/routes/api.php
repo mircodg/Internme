@@ -11,9 +11,13 @@ use App\Http\Controllers\InternshipController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\ResetPasswordController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/password/reset', [ResetPasswordController::class, 'addToken']);
+Route::put('/password/reset', [ResetPasswordController::class, 'resetPassword']);
+Route::get('/check/token/{token}', [ResetPasswordController::class, 'checkToken']);
 
 Route::middleware([JwtCookieToBearer::class], 'auth:sanctum')->group(function () {
     Route::get('/user/{email}', [UserController::class, 'getUserByEmail']);
