@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { LoaderCircle } from "lucide-react";
 import axios from "axios";
@@ -127,7 +127,7 @@ function LoginForm() {
             <div className="grid gap-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link href="#" className="text-sm underline">
+                <Link href="/password/reset" className="text-sm underline">
                   Forgot your password?
                 </Link>
               </div>
