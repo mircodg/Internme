@@ -122,13 +122,23 @@ function CeoSettingsContent() {
     }
   };
 
-  const EditHandler = async (site: SiteData) => {
-    // TODO: Implement edit site logic
+  const EditHandler = async (data: SiteData, previusSite: SiteData) => {
     try {
       setIsLoading(true);
       const response = await axios.put(
         `http://localhost:8000/api/company/site/edit`,
-        site,
+        {
+          Via: data.Via,
+          NumeroCivico: data.NumeroCivico,
+          CAP: data.CAP,
+          Citta: data.Citta,
+          Provincia: data.Provincia,
+          OldVia: previusSite.Via,
+          OldNumeroCivico: previusSite.NumeroCivico,
+          OldCAP: previusSite.CAP,
+          OldCitta: previusSite.Citta,
+          OldProvincia: previusSite.Provincia,
+        },
         {
           withCredentials: true,
         }
@@ -284,7 +294,9 @@ function CeoSettingsContent() {
                         </DialogTrigger>
                         <DialogContent>
                           <form
-                            onSubmit={handleSubmit((data) => EditHandler(data))}
+                            onSubmit={handleSubmit((data) =>
+                              EditHandler(data, sede)
+                            )}
                           >
                             <DialogHeader>
                               <DialogTitle>Edit site</DialogTitle>

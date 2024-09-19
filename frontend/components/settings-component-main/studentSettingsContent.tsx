@@ -10,7 +10,6 @@ import { toast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { Label } from "../ui/label";
 
-
 type EnrollmentData = {
   Matricola: string;
   NomeUniversita: string;
@@ -52,7 +51,7 @@ function StudentSettingsContent() {
       <Card className="w-full mt-8">
         <CardHeader>
           <CardTitle className="text-2xl">Enrollment Details</CardTitle>
-          <CardDescription>See yout enrollment details</CardDescription>
+          <CardDescription>See your enrollment details</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap justify-between gap-y-2">
