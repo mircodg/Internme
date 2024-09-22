@@ -125,7 +125,7 @@ class CompanyController extends Controller
         $Matricola = $request->Matricola;
         $nomeUniversita = $request->NomeUniversita;
         $tirocinante = new Tirocinio();
-        $response = $tirocinante->getActiveInterns($idAzienda, $idTirocinio);
+        $response = $tirocinante->getActiveInterns($idTirocinio);
         $NumTirocinanti = $response->getData()->count->count;
         $universita = new Universita();
         $response = $universita->getUniIDByName($nomeUniversita);
