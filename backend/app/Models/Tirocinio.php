@@ -92,7 +92,7 @@ class Tirocinio extends Model
             // }
 
             # fetching active interns 
-            $sql = "SELECT COUNT(*) as count FROM Candidature WHERE idTirocinio = :idTirocinio AND Stato = 'Active'";
+            $sql = "SELECT COUNT(*) as count FROM Candidature WHERE idTirocinio=:idTirocinio AND Stato='Active'";
             $stmnt = $this->pdo->prepare($sql);
             $stmnt->execute([
                 'idTirocinio' => $idTirocinio

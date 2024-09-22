@@ -137,7 +137,7 @@ class Studente extends Model
     public function getInternships($idUniversita, $Matricola)
     {
         try {
-            $sql = "SELECT * FROM Tirocini WHERE idAzienda IN (SELECT idAzienda FROM Convenzioni WHERE idUniversita = :idUniversita AND Stato = 'Active') AND idTirocinio NOT IN (SELECT idTirocinio FROM Candidature WHERE idUniversita = :idUniversita2 AND Matricola = :Matricola AND Stato='Active' OR Stato='Pending' OR Stato='Ended')";
+            $sql = "SELECT * FROM Tirocini WHERE idAzienda IN (SELECT idAzienda FROM Convenzioni WHERE idUniversita = :idUniversita AND Stato = 'Active') AND idTirocinio NOT IN (SELECT idTirocinio FROM Candidature WHERE idUniversita = :idUniversita2 AND Matricola = :Matricola AND (Stato = 'Active' OR Stato = 'Pending' OR  Stato = 'Ended'))";
             $stmnt = $this->pdo->prepare($sql);
             $stmnt->execute([
                 'idUniversita' => $idUniversita,
