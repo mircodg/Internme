@@ -18,7 +18,7 @@ return new class extends Migration
                 `Utilizzato` TINYINT(1) NOT NULL DEFAULT false,
                 `Timestamp` timestamp NOT NULL,
                 PRIMARY KEY  (`Token`), 
-                FOREIGN KEY (`Email`) REFERENCES `Utenti` (`Email`) 
+                FOREIGN KEY (`Email`) REFERENCES `Utenti` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE
             )"
         );
     }
