@@ -39,6 +39,8 @@ function AcademicDialogForm({ handleSetUniversity }: AcademicDialogFormProps) {
       });
       setOpen(!open);
       handleSetUniversity();
+      // send emails to all companies
+      axios.post("/api/university/notification");
     } catch (error) {
       console.error(error);
     } finally {

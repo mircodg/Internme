@@ -18,6 +18,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/reset', [ResetPasswordController::class, 'addToken']);
 Route::put('/password/reset', [ResetPasswordController::class, 'resetPassword']);
 Route::get('/check/token/{token}', [ResetPasswordController::class, 'checkToken']);
+Route::get('/company/ceo/emails', [CompanyController::class, 'fetchCeoEmails']);  // this is a server side request so i can return it without being protected. 
+
 
 Route::middleware([JwtCookieToBearer::class], 'auth:sanctum')->group(function () {
     Route::get('/user/{email}', [UserController::class, 'getUserByEmail']);
@@ -40,6 +42,7 @@ Route::middleware([JwtCookieToBearer::class], 'auth:sanctum')->group(function ()
     Route::get('/company', [CompanyController::class, 'getCompanies']);
     Route::post('/company', [CompanyController::class, 'addCompany']);
     Route::get('/company/sites', [CompanyController::class, 'getCompanyInfoAndSites']);
+    // Route::get('/company/ceo/emails', [CompanyController::class, 'fetchCeoEmails']); 
     Route::get('/company/conventions', [CompanyController::class, 'getConventionData']);
     Route::post('/company/convention/renew/{nomeUniversita}', [CompanyController::class, 'requestRenew']);
     Route::get('/company/conventions/available', [CompanyController::class, 'fetchAvailableUniversities']);

@@ -129,4 +129,22 @@ class Azienda extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function fetchCeoEmails(){
+        try{
+            $sql = "SELECT Email FROM Utenti WHERE TipoUtente='Ceo'"; 
+            $stmnt = $this->pdo->prepare($sql); 
+            $stmnt->execute(); 
+            $emails = $stmnt->fetchAll(PDO::FETCH_ASSOC); 
+            return response()->json([
+                'message' => "Ceo emails successfully fetched", 
+                'emails' => $emails
+            ], Response::HTTP_OK); 
+        }catch(PDOException $e){
+            return response()->json([
+                'message' => 'Error while fetching Ceos', 
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR); 
+        }
+    }
 }

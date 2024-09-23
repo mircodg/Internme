@@ -180,4 +180,9 @@ class CompanyController extends Controller
         $convenzione = new Convenzione();
         return $convenzione->getActiveConvention($idAzienda);
     }
+
+    function fetchCeoEmails(Request $request){
+        $azienda = new Azienda(); 
+        return $azienda->fetchCeoEmails(); 
+    }
 }
