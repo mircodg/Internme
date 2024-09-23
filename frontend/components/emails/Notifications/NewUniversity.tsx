@@ -24,7 +24,7 @@ export const NewUniversityEmail = () => (
         </Heading>
         <Section style={buttonContainer}>
           <Text style={paragraph}>
-            A new university is available for a potential convenction. Login now
+            A new university is available for a potential partnership. Login now
             with the button below.
           </Text>
           <Button style={button} href={`http://localhost:3000/auth/login`}>

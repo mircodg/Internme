@@ -31,7 +31,7 @@ export async function POST() {
       const { data, error } = await resend.emails.send({
         from: "internMe <no-reply@support.internme.site>",
         to: recipients,
-        subject: "New University in the platform !",
+        subject: "New University in the platform",
         react: NewUniversityEmail(),
       });
       if (error) {
