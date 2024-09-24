@@ -120,4 +120,9 @@ class StudentController extends Controller
         $idUniversita = $data['student']['idUniversita'];
         return $student->studentEnrollment($Matricola, $idUniversita);
     }
+
+    function fetchAllStudentsEmails(){
+        $student = new Studente();
+        return $student->fetchAllStudentsEmails();  
+    }
 }

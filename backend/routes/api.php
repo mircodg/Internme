@@ -18,7 +18,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/reset', [ResetPasswordController::class, 'addToken']);
 Route::put('/password/reset', [ResetPasswordController::class, 'resetPassword']);
 Route::get('/check/token/{token}', [ResetPasswordController::class, 'checkToken']);
-Route::get('/company/ceo/emails', [CompanyController::class, 'fetchCeoEmails']);  // this is a server side request so i can return it without being protected. 
+
+// the following requests are all server side, so i can call them without them being protected.  
+Route::get('/company/ceo/emails', [CompanyController::class, 'fetchCeoEmails']);
+Route::get('/students/emails', [StudentController::class, 'fetchAllStudentsEmails']);  
 
 
 Route::middleware([JwtCookieToBearer::class], 'auth:sanctum')->group(function () {

@@ -240,4 +240,22 @@ class Studente extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function fetchAllStudentsEmails(){
+        try{
+            $sql = "SELECT Email FROM Utenti WHERE TipoUtente='Studente'";
+            $stmnt = $this->pdo->prepare($sql); 
+            $stmnt->execute(); 
+            $emails = $stmnt->fetchAll(PDO::FETCH_ASSOC); 
+            return response()->json([
+                'message' => 'Students emails successfully fetched',
+                'emails' => $emails
+            ], Response::HTTP_OK); 
+        }catch(PDOExcpetion $e){
+            return response()->json([
+                'message' => 'Error while fetching students emails', 
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }
