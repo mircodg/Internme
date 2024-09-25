@@ -72,6 +72,10 @@ function DashCustomList({
         }
       );
       if (response.status === 200) {
+        // send email to the ceo
+        await axios.post("/api/convention/approve", {
+          companyVatNumber: companyVatNumber,
+        });
         window.location.reload();
       }
     } catch (err) {
