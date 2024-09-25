@@ -26,6 +26,7 @@ Route::get('/internship/notification/{idAzienda}', [InternshipController::class,
 Route::post('/student/notification/info', [StudentController::class, 'getStudentInfo']);  
 Route::get('/ceo/email/{idTirocinio}', [CompanyController::class, 'fetchCeoEmailByInternship']); 
 Route::get('/director/email/{nomeUniversita}', [UniversitaController::class, 'getDirecorByUniName']);
+Route::get('/ceo/email/vat/{partitaiva}', [CompanyController::class, 'fetchCeoEmailByVAT']);
 
 Route::middleware([JwtCookieToBearer::class], 'auth:sanctum')->group(function () {
     Route::get('/user/{email}', [UserController::class, 'getUserByEmail']);

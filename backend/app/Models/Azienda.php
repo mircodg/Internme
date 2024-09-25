@@ -167,4 +167,24 @@ class Azienda extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR); 
         }
     }
+
+    public function fetchCeoEmailByVAT($PartitaIVA){
+        try{
+            $sql = "SELECT Email FROM Utenti JOIN Aziende ON Utenti.idUtente = Aziende.idUtente WHERE Aziende.PartitaIva = :PartitaIVA";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'PartitaIVA' => $PartitaIVA
+            ]);
+            $email = $stmnt->fetch(PDO::FETCH_ASSOC);
+            return response()->json([
+                'message' => "Ceo emails successfully fetched",
+                'email' => $email['Email']
+            ], Response::HTTP_OK);
+        }catch(PDOException $e){
+            return response()->json([
+                'message' => 'Error while fetching Ceos', 
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR); 
+        }
+    }
 }

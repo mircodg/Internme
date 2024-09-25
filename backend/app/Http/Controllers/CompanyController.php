@@ -190,4 +190,9 @@ class CompanyController extends Controller
         $azienda = new Azienda(); 
         return $azienda->fetchCeoEmailByInternship($idTirocinio); 
     }
+
+    function fetchCeoEmailByVAT($partitaIva){
+        $azienda = new Azienda(); 
+        return $azienda->fetchCeoEmailByVAT($partitaIva); 
+    }
 }
