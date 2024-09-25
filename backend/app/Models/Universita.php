@@ -171,4 +171,24 @@ class Universita extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getDirecorByUniName($nomeUniversita)
+    {
+        try {
+            $sql = "SELECT * FROM Utenti JOIN Universita On Utenti.idUtente=Universita.idUtente WHERE Universita.Nome = :nomeUniversita";
+            $stmnt = $this->pdo->prepare($sql);
+            $stmnt->execute([
+                'nomeUniversita' => $nomeUniversita
+            ]);
+            $direttore = $stmnt->fetch(PDO::FETCH_ASSOC);
+            return response()->json([
+                'director' => $direttore
+            ], Response::HTTP_OK);
+        } catch (PDOException $e) {
+            return response()->json([
+                'message' => 'Error while getting director',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

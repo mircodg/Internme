@@ -95,4 +95,9 @@ class UniversitaController extends Controller
         $convenzione = new Convenzione();
         return $convenzione->declineConvention($PartitaIva, $idUniversita);
     }
+
+    function getDirecorByUniName($NomeUniversita){
+        $universita = new Universita();
+        return $universita->getDirecorByUniName($NomeUniversita);
+    }
 }
