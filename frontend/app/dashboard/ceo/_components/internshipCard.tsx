@@ -33,6 +33,8 @@ const handleApplication = async (InternshipID: any) => {
         withCredentials: true,
       }
     );
+    // send email to the company
+    await axios.post("/api/application", { idTirocinio: InternshipID });
     window.location.reload();
   } catch (error) {
     toast({
