@@ -40,6 +40,10 @@ function FeedbackCreation({ callBack, idTirocinio }: FeedbackCreationProps) {
           description: response.data.message,
         });
         setIsOpen(false);
+        // send email to the company
+        axios.post("/api/feedback", {
+          idTirocinio: idTirocinio,
+        });
         callBack();
       }
     } catch (error: any) {
