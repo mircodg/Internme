@@ -2,17 +2,14 @@
 
 import { Resend } from "resend";
 import axios from "axios";
-import { EndInternshipEmail } from "@/components/emails/Notifications/EndInternship";
+import { StartInternshipEmail } from "@/components/emails/Notifications/StartInternship";
 
 const resend = new Resend(
   process.env.RESEND_API_KEY ? process.env.RESEND_API_KEY : ""
 );
 
 // fetch interested students emails the database
-async function endInternshipEmailSending(
-  Matricola: string,
-  NomeUniversita: string
-) {
+async function fetchStudentEmail(Matricola: string, NomeUniversita: string) {
   try {
     const response = await axios.post(
       `http://backend:8000/api/student/notification/info`,
@@ -32,16 +29,13 @@ async function endInternshipEmailSending(
 export async function POST(req: Request) {
   try {
     const { Matricola, NomeUniversita } = await req.json();
-    const recipient = await endInternshipEmailSending(
-      Matricola,
-      NomeUniversita
-    ); // need to implement on the internship fe and test it.
+    const recipient = await fetchStudentEmail(Matricola, NomeUniversita);
     if (recipient) {
       const { data, error } = await resend.emails.send({
         from: "internMe <no-reply@support.internme.site>",
         to: recipient,
-        subject: "End of Internship",
-        react: EndInternshipEmail(),
+        subject: "Start of Internship",
+        react: StartInternshipEmail(),
       });
       if (error) {
         console.log("error" + error);

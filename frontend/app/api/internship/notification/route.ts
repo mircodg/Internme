@@ -26,7 +26,7 @@ async function fetchStudentsEmails(idAzienda: string) {
 export async function POST(req: Request) {
   try {
     const { idAzienda } = await req.json();
-    const recipients = await fetchStudentsEmails(idAzienda); // need to implement on the internship fe and test it.
+    const recipients = await fetchStudentsEmails(idAzienda);
     if (recipients.length > 0) {
       const { data, error } = await resend.emails.send({
         from: "internMe <no-reply@support.internme.site>",
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     }
     console.log("No recipients");
     return Response.json(
-      { message: "No ceos in the platform" },
+      { message: "No students found for this internship" },
       { status: 200 }
     );
   } catch (error) {
