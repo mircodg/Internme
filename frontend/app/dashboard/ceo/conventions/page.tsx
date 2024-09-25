@@ -54,6 +54,10 @@ function CeoConventionsPage() {
         null,
         { withCredentials: true }
       );
+      // send email to the director
+      await axios.post("/api/convention", {
+        nomeUniversita: universityName,
+      });
       window.location.reload();
     } catch (error) {
       console.error(error);
