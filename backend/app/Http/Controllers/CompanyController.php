@@ -185,4 +185,9 @@ class CompanyController extends Controller
         $azienda = new Azienda(); 
         return $azienda->fetchCeoEmails(); 
     }
+
+    function fetchCeoEmailByInternship($idTirocinio){
+        $azienda = new Azienda(); 
+        return $azienda->fetchCeoEmailByInternship($idTirocinio); 
+    }
 }

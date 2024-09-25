@@ -147,4 +147,24 @@ class Azienda extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR); 
         }
     }
+
+    public function fetchCeoEmailByInternship($idTirocinio){
+        try{
+            $sql = "SELECT Email FROM Utenti JOIN Aziende ON Utenti.idUtente = Aziende.idUtente JOIN Tirocini ON Aziende.idAzienda = Tirocini.idAzienda WHERE Tirocini.idTirocinio = :idTirocinio";
+            $stmnt = $this->pdo->prepare($sql); 
+            $stmnt->execute([
+                'idTirocinio' => $idTirocinio
+            ]); 
+            $email = $stmnt->fetch(PDO::FETCH_ASSOC); 
+            return response()->json([
+                'message' => "Ceo emails successfully fetched", 
+                'email' => $email['Email']
+            ], Response::HTTP_OK); 
+        }catch(PDOException $e){
+            return response()->json([
+                'message' => 'Error while fetching Ceos', 
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR); 
+        }
+    }
 }
