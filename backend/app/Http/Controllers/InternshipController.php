@@ -111,4 +111,9 @@ class InternshipController extends Controller
         $tirocinio = new Tirocinio();
         return $tirocinio->removeInternship($idTirocinio, $idAzienda);
     }
+
+    function internshipNotificationEmails($idAzienda){
+        $internship = new Tirocinio(); 
+        return $internship->internshipNotificationEmails($idAzienda);
+    }
 }

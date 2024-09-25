@@ -190,4 +190,24 @@ class Tirocinio extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function internshipNotificationEmails($idAzienda){
+        try{
+            $sql = "SELECT U.Email FROM Utenti U JOIN AccountStudente AST ON U.idUtente = AST.idUtente WHERE AST.idUniversita IN (SELECT Universita.idUniversita FROM Universita JOIN Convenzioni ON Universita.idUniversita=Convenzioni.idUniversita WHERE Convenzioni.idAzienda=:idAzienda AND Stato='Active')"; 
+            $stmnt = $this->pdo->prepare($sql); 
+            $stmnt->execute([
+                'idAzienda' => $idAzienda
+            ]);
+            $emails = $stmnt->fetchAll(PDO::FETCH_ASSOC); 
+            return response()->json([
+                'message' => "Emails for internship notification successfully fetched",
+                'emails' => $emails
+            ], Response::HTTP_OK); 
+        }catch(PDOExcpetion $e){
+            return response()->json([
+                'message' => 'Error while fetching emails', 
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR); 
+        }
+    }
 }
