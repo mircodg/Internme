@@ -169,6 +169,7 @@ function ApplicationList({ mode }: ApplicationListProps) {
       if (response.status === 200) {
         window.location.reload();
       }
+      // send email to student
     } catch (error) {
       console.log(error);
       return;
@@ -219,6 +220,11 @@ function ApplicationList({ mode }: ApplicationListProps) {
           withCredentials: true,
         }
       );
+      // sending email to student
+      await axios.post("/api/internship/notification/end", {
+        Matricola: Matricola,
+        NomeUniversita: NomeUniversita,
+      });
       if (response.status === 200) {
         toast({
           description: "Internship ended successfully",
