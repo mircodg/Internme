@@ -125,4 +125,11 @@ class StudentController extends Controller
         $student = new Studente();
         return $student->fetchAllStudentsEmails();  
     }
+
+    function getStudentInfo(Request $request){
+        $student = new Studente();
+        $Matricola  = $request->Matricola;
+        $NomeUniversita = $request->NomeUniversita;
+        return $student->getStudentInfo($Matricola, $NomeUniversita);
+    }
 }

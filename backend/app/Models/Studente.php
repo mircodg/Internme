@@ -258,4 +258,32 @@ class Studente extends Model
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getStudentInfo($Matricola, $NomeUniversita){
+        try{
+            $sql = "SELECT * FROM AccountStudente JOIN Utenti ON AccountStudente.idUtente = Utenti.idUtente JOIN Universita ON AccountStudente.idUniversita = Universita.idUniversita WHERE Matricola = :Matricola AND Universita.Nome = :NomeUniversita";
+            $stmnt = $this->pdo->prepare($sql); 
+            $stmnt->execute([
+                'Matricola' => $Matricola, 
+                'NomeUniversita' => $NomeUniversita
+            ]); 
+            $count = $stmnt->rowCount(); 
+            if($count == 0){
+                return response()->json([
+                    'message' => 'Student not found'
+                ], Response::HTTP_NOT_FOUND); 
+            }else{
+                $student = $stmnt->fetch(PDO::FETCH_ASSOC); 
+                return response()->json([
+                    'message' => 'Student found',
+                    'student' => $student
+                ], Response::HTTP_OK); 
+            }
+        }catch(PDOException $e){
+            return response()->json([
+                'message' => 'Error while getting student info', 
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR); 
+        }
+    }
 }
