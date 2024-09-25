@@ -214,7 +214,7 @@ function InternshipList() {
     console.log("Form errors: " + JSON.stringify(error, null, 2));
   };
 
-  const submitHandler: SubmitHandler<Inputs> = (data) => {
+  const submitHandler: SubmitHandler<Inputs> = async (data) => {
     const newInternship: internshipsData = {
       title: data.title,
       description: data.description,
@@ -241,6 +241,15 @@ function InternshipList() {
         }
       );
       setIsOpen(false);
+      // retrieve idAzienda and then send emails to students
+      const response2 = await axios.get(
+        "http://localhost:8000/api/company/sites",
+        {
+          withCredentials: true,
+        }
+      );
+      const idAzienda = response2.data.company.idAzienda;
+      await axios.post("/api/internship/notification", { idAzienda });
       window.location.reload();
     } catch (error: any) {
       toast({
