@@ -167,12 +167,12 @@ function ApplicationList({ mode }: ApplicationListProps) {
         }
       );
       if (response.status === 200) {
-        window.location.reload();
         // send email to student
         await axios.post("/api/internship/notification/start", {
           Matricola: Matricola,
           NomeUniversita: NomeUniversita,
         });
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -228,12 +228,12 @@ function ApplicationList({ mode }: ApplicationListProps) {
         toast({
           description: "Internship ended successfully",
         });
-        window.location.reload();
         // sending email to student
         await axios.post("/api/internship/notification/end", {
           Matricola: Matricola,
           NomeUniversita: NomeUniversita,
         });
+        window.location.reload();
       }
     } catch (error) {
       toast({
@@ -325,7 +325,7 @@ function ApplicationList({ mode }: ApplicationListProps) {
                 <>
                   <TableHead>Student ID</TableHead>
                   <TableHead className="hidden md:table-cell">
-                    Università
+                    University
                   </TableHead>
                 </>
               )}

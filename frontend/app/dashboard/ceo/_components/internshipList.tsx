@@ -314,7 +314,7 @@ function InternshipList() {
                     <Input
                       type="text"
                       id="title"
-                      placeholder="Intern Title"
+                      placeholder="IT Specialist"
                       {...register("title", { required: true })}
                     />
                     {errors.title && <span>{errors.title.message}</span>}
@@ -324,7 +324,7 @@ function InternshipList() {
                     <Input
                       type="text"
                       id="description"
-                      placeholder="Intern Description"
+                      placeholder="We are looking for ..."
                       {...register("description", { required: true })}
                     />
                     {errors.description && (
@@ -370,7 +370,7 @@ function InternshipList() {
                     <Input
                       type="text"
                       id="maxInterns"
-                      placeholder="Max Interns number"
+                      placeholder="5"
                       {...register("maxInterns", { required: true })}
                     />
                     {errors.maxInterns && (
@@ -388,11 +388,11 @@ function InternshipList() {
                     {errors.cdl && <span>{errors.cdl.message}</span>}
                   </div>
                   <div>
-                    <Label htmlFor="pay">Pay</Label>
+                    <Label htmlFor="pay">Payment</Label>
                     <Input
                       type="text"
                       id="pay"
-                      placeholder="Pay"
+                      placeholder=""
                       {...register("pay")}
                     />
                     {errors.pay && <span>{errors.pay.message}</span>}

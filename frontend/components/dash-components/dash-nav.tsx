@@ -282,7 +282,6 @@ function CustomDashboardNavbar({ role, children }: CustomDashboardNavbarProps) {
               <DropdownMenuItem onSelect={handleSettings}>
                 Settings
               </DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={handleLogout}>
                 Logout
