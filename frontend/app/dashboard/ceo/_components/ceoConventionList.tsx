@@ -41,6 +41,9 @@ const handleRenew = async (universityName: string) => {
       { withCredentials: true }
     );
     if (response.status === 200) {
+      await axios.post("/api/convention", {
+        nomeUniversita: universityName,
+      });
       window.location.reload();
     }
   } catch (error) {
